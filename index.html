@@ -1115,6 +1115,25 @@ img{max-width:100%;display:block}
   word-break:keep-all;
 }
 .sup-card-desc strong{ color:#8FB8FF; font-weight:900; }
+/* ═══ 2026-09-27 가독성·강조·모션 ═══ */
+.done-desc{font-size:15.5px;color:#374151;}
+.done-desc strong{color:var(--navy);font-weight:800;}
+.done-info-row{font-size:15px;font-weight:600;}
+.hl{background:linear-gradient(transparent 55%,#FFE36E 55%);font-weight:800;color:#111827;padding:0 2px;}
+.kakao-note{font-size:14.5px;color:#1f2937;margin-bottom:12px;word-break:keep-all;text-align:center;line-height:1.7;}
+.kakao-note .no{color:#B91C1C;font-weight:800;}
+#fakeWarn{font-size:14px !important;}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);}
+.rv.in{opacity:1;transform:none;}
+.done-icon.rv{transform:scale(.4);}
+.done-icon.rv.in{transform:scale(1);transition:opacity .4s ease,transform .5s cubic-bezier(.3,1.6,.5,1);}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none;}}
+/* ═══ 2026-09-27 나이대 칸 ═══ */
+.age-label{font-size:14px;font-weight:800;color:var(--navy);margin:0 0 8px;}
+.age-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:6px;}
+.age-btn{padding:12px 0;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;font-size:15px;font-weight:800;color:#374151;min-height:46px;}
+.age-btn.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark);}
+.job-label{font-size:14px;font-weight:800;color:var(--navy);margin:14px 0 8px;}
 </style>
 </head>
 <body>
@@ -1498,7 +1517,7 @@ img{max-width:100%;display:block}
               <strong>■ 수집·이용 목적</strong><br>
               채용 상담 연락 및 안내<br><br>
               <strong>■ 보유 및 이용 기간</strong><br>
-              상담 완료 후 파기 (관련 법령에 따름)<br><br>
+              수집일로부터 1년간 보유 후 파기<br><br>
               채용 상담 목적 외에는 사용하지 않습니다.<br><br>
               문의: <a href="mailto:dyepd1987@gmail.com">dyepd1987@gmail.com</a>
             </div>
@@ -1511,8 +1530,18 @@ img{max-width:100%;display:block}
         <!-- ══ STEP 2: 현재/최근 직업 ══ -->
         <div class="step-slide" id="slide-1">
           <div class="step-num">STEP 2 / 3</div>
-          <div class="step-q">현재 또는 최근에<br>하시던 일을 알려주세요</div>
+          <div class="step-q">나이대와<br>하시던 일을 알려주세요</div>
           <div class="step-hint">지원 자격 확인에 참고합니다</div>
+          <!-- 2026-09-27 나이대 칸 -->
+          <div class="age-label">나이대</div>
+          <div class="age-row" id="age-grid">
+            <button type="button" class="age-btn" data-age="30대">30대</button>
+            <button type="button" class="age-btn" data-age="40대">40대</button>
+            <button type="button" class="age-btn" data-age="50대">50대</button>
+            <button type="button" class="age-btn" data-age="60대 이상">60대 이상</button>
+          </div>
+          <div class="step-err" id="err-age">나이대를 골라 주세요</div>
+          <div class="job-label">하시던 일</div>
           <div class="sel-grid-2" id="job-grid">
             <button type="button" class="sel-btn" data-val="직장인">
               <span class="sb-icon"><i class="fa-solid fa-briefcase"></i></span>
@@ -1533,10 +1562,12 @@ img{max-width:100%;display:block}
             <button type="button" class="sel-btn" data-val="프리랜서·기타">
               <span class="sb-icon"><i class="fa-solid fa-laptop"></i></span>
               <span class="sb-label">프리랜서·기타</span>
+              <span class="sb-sub">보험업 제외</span>
             </button>
             <button type="button" class="sel-btn sel-btn--career" data-val="보험업 경력자">
               <span class="sb-icon"><i class="fa-solid fa-shield-halved"></i></span>
-              <span class="sb-label">보험업 경력자</span>
+              <span class="sb-label">보험업 경력직</span>
+              <span class="sb-sub">설계사 경력은 여기<br>(프리랜서 X)</span>
             </button>
           </div>
           <div class="step-err" id="err-2">현재 또는 최근 직업을 선택해주세요</div>
@@ -1651,17 +1682,26 @@ img{max-width:100%;display:block}
               <span class="sb-label">오후</span>
               <span class="sb-sub">12 ~ 18시</span>
             </button>
-            <button type="button" class="sel-btn" data-val="저녁(18~21시)">
+            <button type="button" class="sel-btn" data-val="저녁(18~19시)">
               <span class="sb-icon"><i class="fa-solid fa-moon"></i></span>
               <span class="sb-label">저녁</span>
-              <span class="sb-sub">18 ~ 21시</span>
+              <span class="sb-sub">18 ~ 19시</span>
             </button>
-            <button type="button" class="sel-btn" data-val="언제든 괜찮아요">
+            <button type="button" class="sel-btn" data-val="퇴근 후(19~21시)">
+              <span class="sb-icon"><i class="fa-solid fa-briefcase"></i></span>
+              <span class="sb-label">퇴근 후</span>
+              <span class="sb-sub">19 ~ 21시</span>
+            </button>
+            <button type="button" class="sel-btn" data-val="언제든 괜찮아요" style="grid-column:1/-1">
               <span class="sb-icon"><i class="fa-solid fa-clock"></i></span>
               <span class="sb-label">언제든<br>괜찮아요</span>
             </button>
           </div>
           <div class="step-err" id="err-3">시간대를 선택해주세요</div>
+          <!-- 2026-09-25 번호 재확인(본인 아닌 번호 방지) -->
+          <div id="phoneConfirm" style="margin-top:14px;padding:10px 12px;border-radius:10px;background:#EAF1FF;color:#152A4E;font-size:14px;line-height:1.55">담당자가 <b id="phoneConfirmNum">-</b> 번호로 전화드립니다. 본인 번호가 맞나요? <button type="button" id="phoneConfirmEdit" style="color:#1D4FC4;text-decoration:underline;font-size:13px;font-weight:700">번호 고치기</button></div>
+          <!-- 2026-09-27 허위 신청 경고 -->
+          <div id="fakeWarn" style="margin-top:10px;padding:10px 12px;border-radius:10px;background:#FEF2F2;border:1px solid #FCA5A5;color:#7F1D1D;font-size:13px;line-height:1.6;word-break:keep-all"><b>⚠️ 본인 정보로 정확히 신청해 주세요.</b><br>보험업 경력을 숨기고 신인으로 신청하거나, 타인 번호·허위 정보로 신청하면 광고주에게 실제 광고비 손해가 발생합니다. 이런 신청은 <b>기록을 보관하며, 업무방해(형법 제314조)로 고소 등 법적 조치를 진행합니다.</b></div>
           <div style="flex:1;min-height:16px"></div>
           <button class="step-next-btn" id="next-3" style="background:var(--accent)"><i class="fa-solid fa-check"></i> 신청 완료하기</button>
           <button class="step-back" id="time-back">← 이전</button>
@@ -1672,27 +1712,25 @@ img{max-width:100%;display:block}
           <div class="step-done">
             <div class="done-icon" style="color:#10b981;"><i class="fa-solid fa-circle-check"></i></div>
             <div class="done-title">신청 완료!</div>
-            <div class="done-desc">신청해 주셔서 감사합니다 😊<br>담당자가 빠른 시간 내에 직접 연락드립니다.</div>
+            <div class="done-desc">신청해 주셔서 감사합니다 😊<br><strong>전화 꼭 받아 주세요!</strong></div>
 
             <div class="done-info" style="margin-top:20px;">
               <div class="done-info-row"><span class="done-info-icon"><i class="fa-solid fa-phone"></i></span>담당자가 직접 전화드립니다</div>
-              <div class="done-info-row"><span class="done-info-icon"><i class="fa-solid fa-clock"></i></span>평일 09:00 ~ 18:00</div>
-              <div class="done-info-row"><span class="done-info-icon"><i class="fa-solid fa-stopwatch"></i></span>평균 상담 시간 10~15분</div>
+              <div class="done-info-row"><span class="done-info-icon"><i class="fa-solid fa-clock"></i></span>신청하시면 바로 전화드릴 수 있어요</div>
+              <div class="done-info-row"><span class="done-info-icon"><i class="fa-solid fa-stopwatch"></i></span>평균 통화 시간 5~10분</div>
             </div>
 
             <!-- ── 카카오톡 버튼 ── -->
             <div style="width:100%;margin-top:24px;">
-              <div style="font-size:13px;color:#6b7280;margin-bottom:10px;word-break:keep-all;text-align:center;">
-                전화 전에 먼저 궁금한 게 있으시면
-              </div>
-              <a href="https://open.kakao.com/o/staTKLKi"
+              <div class="kakao-note">문의하실 때 <span class="hl">성함 + 신청 번호 뒤 4자리</span>를 먼저 보내 주세요.<br><span class="no">본인 확인이 안 되면 답변드리지 않습니다.</span><br>회사명·조건은 본인 확인 후 전화로 안내드립니다.</div>
+              <a href="https://open.kakao.com/o/sPpjoCPi"
                  class="done-kakao-btn"
                  target="_blank"
                  rel="noopener noreferrer">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="#3A1D1D" aria-hidden="true">
                   <path d="M12 3C6.477 3 2 6.582 2 11c0 2.713 1.584 5.112 4 6.722V21l3.387-1.87C10.538 19.364 11.258 19.5 12 19.5c5.523 0 10-3.582 10-8s-4.477-8-10-8z"/>
                 </svg>
-                전화보다 편하게, 여기서 물어보세요
+                카카오톡 문의 (성함·연락처 필수)
               </a>
             </div>
 
@@ -1713,14 +1751,15 @@ img{max-width:100%;display:block}
             <div class="done-desc" style="color:#6b7280;">궁금한 점은 편하게 물어보세요.</div>
 
             <div style="width:100%;margin-top:24px;">
-              <a href="https://open.kakao.com/o/staTKLKi"
+              <div class="kakao-note">문의하실 때 <span class="hl">성함 + 연락처</span>를 먼저 보내 주세요.<br><span class="no">본인 확인이 안 되면 답변드리지 않습니다.</span><br>회사명·조건은 본인 확인 후 전화로 안내드립니다.</div>
+              <a href="https://open.kakao.com/o/sPpjoCPi"
                  class="done-kakao-btn"
                  target="_blank"
                  rel="noopener noreferrer">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="#3A1D1D" aria-hidden="true">
                   <path d="M12 3C6.477 3 2 6.582 2 11c0 2.713 1.584 5.112 4 6.722V21l3.387-1.87C10.538 19.364 11.258 19.5 12 19.5c5.523 0 10-3.582 10-8s-4.477-8-10-8z"/>
                 </svg>
-                오픈카카오톡으로 익명 문의하기
+                카카오톡 문의 (성함·연락처 필수)
               </a>
             </div>
 
@@ -1822,7 +1861,7 @@ function _openModalCore(){
   if(prv) prv.checked = true;
   Object.keys(data).forEach(k => data[k]='');
   hideErr('0-name');
-  $$('.sel-btn').forEach(b => b.classList.remove('sel'));
+  $$('.sel-btn, .age-btn').forEach(b => b.classList.remove('sel'));
   $$('.step-err').forEach(e => e.classList.remove('show'));
   const box = $('#prvDetailBox');
   if(box) box.classList.remove('open');
@@ -1846,6 +1885,8 @@ function closeModal(){
                      (urlParams.get('utm_medium')||'').toLowerCase().includes('paid');
 
   /* 인스타 광고 유입이 아니면 이 기능 전체 스킵 */
+  /* 2026-09-25 지점장님 "자동입력 기능부터 없애자" — 페이스북 저장 이름·번호가 신청자 본인과 달라 본인 아닌 번호가 들어옴. 기능 전체 끔 */
+  return;
   if(!hasFbclid && !isIgSource) return;
 
   /* ── 2. Meta Pixel getUserData로 저장된 정보 요청 ── */
@@ -1963,7 +2004,49 @@ function closeModal(){
   };
 })();
 
+/* ══ 2026-09-25 재신청 막기 ══
+   A: 이 폰에서 신청을 마친 적 있으면 신청서 대신 안내 배너.
+   B: 번호를 다 넣으면 우리 서버에 '이미 신청한 번호인지'만 묻는다(번호는 SHA-256으로 바꿔 보냄).
+   서버가 2.5초 안에 답하지 않으면 막지 않고 그냥 신청을 받는다.
+   '빨리 연락 받기'는 새 신청이 아니라 원래 담당에게 가는 재촉 알림 — 메타 신청(Lead)으로 보내지 않는다. */
+const HQ_DUP_API = 'https://hanshin.tailc0e4a6.ts.net/fc/check';
+function hqAppliedHere(){ try{ return !!localStorage.getItem('hq_applied'); }catch(e){ return false; } }
+function hqMarkApplied(name, phone){ try{ localStorage.setItem('hq_applied', JSON.stringify({ name, phone, at: Date.now() })); }catch(e){} }
+async function hqIsDup(phone){
+  try{
+    const d = String(phone || '').replace(/[^0-9]/g, '');
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(d));
+    const h = Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 2500);
+    const r = await fetch(HQ_DUP_API + '?h=' + h, { signal: ctl.signal }); clearTimeout(t);
+    return r.ok && (await r.json()).dup === true;
+  }catch(e){ return false; }
+}
+let hqDupPerson = null;
+function hqShowDup(person){
+  hqDupPerson = person || (() => { try{ return JSON.parse(localStorage.getItem('hq_applied') || 'null'); }catch(e){ return null; } })();
+  const box = document.getElementById('dupNotice'); if(box) box.style.display = 'flex';
+  const done = document.getElementById('dupNudgeDone'); if(done) done.style.display = 'none';
+  const btn = document.getElementById('dupNudge'); if(btn){ btn.style.display = (hqDupPerson && hqDupPerson.phone) ? '' : 'none'; btn.disabled = false; }
+}
+document.addEventListener('click', e => { if(!e.target.closest('#dupClose')) return; document.getElementById('dupNotice').style.display = 'none'; });
+document.addEventListener('click', async e => { if(!e.target.closest('#dupNudge')) return;
+  const btn = document.getElementById('dupNudge'); btn.disabled = true;
+  const p = hqDupPerson || {};
+  try{
+    await emailjs.send('service_x66ocbi', 'template_7b1xztu', {
+      user_name: p.name || '', user_phone: p.phone || '', user_job: '⏰ 연락 요청(재신청)', user_time: '',
+      send_time: new Date().toLocaleString('ko-KR') + '  [연락 요청 — 새 신청 아님]',
+      user_gap: '', user_gap_detail: '', user_income: '', user_intent: '',
+      ad_id: (window.AD_TRACK && AD_TRACK.ad) || '', ad_set: (window.AD_TRACK && AD_TRACK.set) || '',
+      ad_campaign: (window.AD_TRACK && AD_TRACK.camp) || '', ad_source: (window.AD_TRACK && AD_TRACK.src) || ''
+    });
+    btn.style.display = 'none'; document.getElementById('dupNudgeDone').style.display = 'block';
+  }catch(e){ btn.disabled = false; alert('잠시 후 다시 눌러 주세요.'); }
+});
+
 $$('.apply-trigger').forEach(btn => btn.addEventListener('click', ()=>{
+  if(hqAppliedHere()){ hqShowDup(); return; }
   if(typeof window._openModalWithMeta === 'function'){
     window._openModalWithMeta();
   } else {
@@ -2003,6 +2086,7 @@ function gotoSlide(idx){
   if(idx===0 && !_fbFired.s1){ safeFbq('Form_Step1'); _fbFired.s1=true; }
   if(idx===1 && !_fbFired.s2){ safeFbq('Form_Step2'); _fbFired.s2=true; }
   if(idx===7 && !_fbFired.s3){ safeFbq('Form_Step3'); _fbFired.s3=true; }
+  if(idx===7){ const pc=document.getElementById('phoneConfirmNum'); if(pc) pc.textContent = data.phone || $('#inp-phone').value; }
   setTimeout(() => {
     if(idx===0){ const inp=$('#inp-name'); if(inp) inp.focus(); }
   }, 420);
@@ -2048,6 +2132,10 @@ phoneInp.addEventListener('keydown', e => {
   if((e.key==='Backspace'||e.key==='Delete') && phoneInp.value.startsWith(PREFIX) && sel<=PREFIX.length) e.preventDefault();
   if(e.key==='Enter'){ e.preventDefault(); $('#next-0').click(); }
 });
+/* 2026-09-25 결정 2㉡ — 사람이 치지 않고 브라우저가 채운 이름·번호 표시(가족 공용 폰 등) */
+window._autoFilled = false;
+['#inp-name','#inp-phone'].forEach(sel => { const el=$(sel); if(el) el.addEventListener('input', e => { if(!e.inputType || e.inputType==='insertReplacementText') window._autoFilled = true; }); });
+document.getElementById('phoneConfirmEdit')?.addEventListener('click', () => { gotoSlide(0); setTimeout(()=>{ const p=$('#inp-phone'); if(p){ p.focus(); p.select(); } }, 450); });
 phoneInp.addEventListener('input', () => {
   hideErr(0);
   let d = phoneInp.value.replace(/\D/g,'');
@@ -2062,7 +2150,7 @@ phoneInp.addEventListener('input', () => {
     hideErr(0); hideErr('0-name'); hideErr('0-prv');
     data.name  = nameVal;
     data.phone = phoneInp.value;
-    setTimeout(() => gotoSlide(1), 350);
+    hqIsDup(phoneInp.value).then(dup => { if(dup){ closeModal(); hqShowDup({ name: nameVal, phone: phoneInp.value }); } else setTimeout(() => gotoSlide(1), 350); });
   }
 });
 $('#next-0').addEventListener('click', () => {
@@ -2073,7 +2161,7 @@ $('#next-0').addEventListener('click', () => {
   hideErr('0-name'); hideErr(0); hideErr('0-prv');
   data.name  = nameVal;
   data.phone = phoneInp.value;
-  gotoSlide(1);
+  hqIsDup(data.phone).then(dup => { if(dup){ closeModal(); hqShowDup({ name: data.name, phone: data.phone }); } else gotoSlide(1); });
 });
 
 /* ══ STEP 2: 현재/최근 직업 ══ */
@@ -2081,6 +2169,7 @@ $$('#job-grid .sel-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     $$('#job-grid .sel-btn').forEach(b=>b.classList.remove('sel'));
     btn.classList.add('sel'); data.job=btn.dataset.val; hideErr(2);
+    if(!data.age){ showErr('age'); return; } /* 2026-09-27 나이대 먼저 */
     if(data.job === '보험업 경력자'){
       /* 경력자 분기 — 추가 데이터 초기화 */
       data.gap=''; data.gapDetail=''; data.income=''; data.intent='';
@@ -2090,7 +2179,14 @@ $$('#job-grid .sel-btn').forEach(btn => {
     }
   });
 });
+/* 2026-09-27 나이대 선택 — 직업을 이미 골랐으면 바로 다음으로 */
+$$('#age-grid .age-btn').forEach(b => b.addEventListener('click', () => {
+  $$('#age-grid .age-btn').forEach(x => x.classList.remove('sel'));
+  b.classList.add('sel'); data.age = b.dataset.age; hideErr('age');
+  if(data.job){ const j = document.querySelector('#job-grid .sel-btn.sel'); if(j) j.click(); }
+}));
 $('#next-2').addEventListener('click', () => {
+  if(!data.age){showErr('age');return;}
   if(!data.job){showErr(2);return;}
   hideErr(2);
   if(data.job==='보험업 경력자') gotoSlide(2);
@@ -2275,6 +2371,8 @@ $('#next-3').addEventListener('click', async () => {
   };
   /* 템플릿에 ad_* 변수가 아직 없어도 메일에 보이도록 신청 시간 뒤에 덧붙임 */
   if(window.AD_TRACK && AD_TRACK.label()) params.send_time += '  [' + AD_TRACK.label() + ']';
+  if(data.age) params.send_time += '  [나이 ' + data.age + ']'; /* 2026-09-27 */
+  if(window._autoFilled) params.send_time += '  [자동채움]';
   try{
     await emailjs.send('service_x66ocbi','template_7b1xztu', params);
     /* ✅ Lead 이벤트 - 캠페인 성격 구분 파라미터 포함. eventID 는 서버 전송(CAPI)과 같은 값 → 메타가 하나로 합침 */
@@ -2287,6 +2385,7 @@ $('#next-3').addEventListener('click', async () => {
     }, { eventID: leadEventId });
     if(typeof window.sendCapiLead === 'function') window.sendCapiLead(leadEventId, params);
     window._submitDone = true; // ✅ 신청 완료 플래그
+    hqMarkApplied(data.name, data.phone); // 2026-09-25 재신청 막기 A
     gotoSlide(8); // slide-done
   }catch(err){
     const status=err.status||err.code||'알수없음';
@@ -2320,7 +2419,35 @@ document.getElementById('exitCloseBtn').addEventListener('click', closeModal);
   obs.observe(formEl);
 })();
 
+/* ═══ 2026-09-27 섹션 등장 모션 — 화면에 들어올 때 아래에서 떠오름 ═══ */
+(function(){
+  if(!('IntersectionObserver' in window)) return; // 지원 안 하면 모션 없이 그대로 보임
+  const items = [];
+  document.querySelectorAll('section:not(.hero)').forEach(sec => {
+    Array.from(sec.children).forEach(ch => {
+      const cards = Array.from(ch.children).filter(c => /card|item|row/.test(c.className));
+      if(cards.length >= 2) cards.forEach((c,i) => items.push([c,i])); else items.push([ch,0]);
+    });
+  });
+  document.querySelectorAll('#slide-done .step-done > *, #slide-exit .step-done > *, #slide-done .done-info-row').forEach((el,i) => items.push([el, el.classList.contains('done-info-row') ? i%4 : 0]));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: 0.12 });
+  items.forEach(([el,i]) => { el.classList.add('rv'); el.style.transitionDelay = (i*0.09)+'s'; io.observe(el); });
+})();
+
 </script>
 <div class="lp-canary-token" style="display:none;" aria-hidden="true">lp-id:LP-2024-INS-7X9K2M</div>
+<!-- 2026-09-25 재신청 안내 배너 -->
+<div id="dupNotice" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.55);align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fff;border-radius:18px;max-width:380px;width:100%;padding:24px 20px;text-align:center;color:#1a1a2e">
+    <div style="font-size:34px;line-height:1">😊</div>
+    <div style="font-size:19px;font-weight:800;margin:10px 0 6px">이미 신청해 주셨어요</div>
+    <div style="font-size:15px;line-height:1.6;color:#374151">담당자가 곧 연락드려요.<br>아직 전화가 없었다면 아래 버튼을 눌러 주세요.</div>
+    <button type="button" id="dupNudge" style="margin-top:16px;width:100%;padding:14px;border-radius:12px;background:#2F6FED;color:#fff;font-size:16px;font-weight:800">빨리 연락 받기</button>
+    <div id="dupNudgeDone" style="display:none;margin-top:16px;padding:12px;border-radius:12px;background:#EAF1FF;color:#152A4E;font-size:15px;font-weight:700">담당자에게 전달했어요. 곧 전화드릴게요.</div>
+    <button type="button" id="dupClose" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;background:#F3F4F6;color:#374151;font-size:15px;font-weight:700">닫기</button>
+  </div>
+</div>
 </body>
 </html>
