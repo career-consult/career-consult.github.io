@@ -199,6 +199,9 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
 @keyframes draw{to{stroke-dashoffset:0}}
 #done h2{margin-top:22px;font-size:28px}
 #done p{margin-top:8px;color:var(--mute);font-size:16px}
+#done .with{margin-top:22px;color:#f3ead8;font-size:17px;font-weight:700;line-height:1.5}
+#done #doneShare{border-color:var(--gold);color:var(--gold)}
+#done #doneShare+button{margin-top:10px}
 #done button{margin-top:28px;min-height:50px;padding:0 28px;border-radius:14px;border:1px solid #6f5b31;background:none;font-weight:800;cursor:pointer}
 
 /* 모션 줄이기 설정 / 스크립트 미동작 시 — 정지 화면으로 */
@@ -345,7 +348,7 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
       <input type="hidden" name="ad" id="h-ad"><input type="hidden" name="set" id="h-set">
       <div class="slides" id="slides">
         <div class="sl"><div class="sl-in">
-          <p class="sl-n">STEP 1 / 3</p><h3 class="sl-q gm">성함과 연락처를<br>알려 주세요</h3><p class="sl-h">담당자가 이 번호로 직접 전화드립니다</p>
+          <p class="sl-n">STEP 1 / 2</p><h3 class="sl-q gm">성함과 연락처를<br>알려 주세요</h3><p class="sl-h">담당자가 이 번호로 직접 전화드립니다</p>
           <div class="fld" id="w-name"><label for="i-name">이름</label>
       <input type="text" id="i-name" name="name" autocomplete="name" placeholder="홍길동" maxlength="20">
       <div class="err">이름을 적어 주세요</div></div>
@@ -368,17 +371,7 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
       <div class="err">동의하셔야 신청할 수 있습니다</div></div>
         </div></div>
         <div class="sl"><div class="sl-in">
-          <p class="sl-n">STEP 2 / 3</p><h3 class="sl-q gm">몇 분이<br>오시나요?</h3><p class="sl-h">고르시면 바로 다음으로 넘어갑니다</p>
-          <div class="fld" id="w-people"><span class="lb">참석 인원</span>
-      <div class="chips">
-        <label><input type="radio" name="people" value="본인"><span>본인</span></label>
-        <label><input type="radio" name="people" value="동행 1명"><span>동행 1명 (2명)</span></label>
-      </div><div class="err">참석 인원을 골라 주세요</div></div>
-    
-          <button type="button" class="sl-back" data-back="0">← 이전</button>
-        </div></div>
-        <div class="sl"><div class="sl-in">
-          <p class="sl-n">STEP 3 / 3</p>
+          <p class="sl-n">STEP 2 / 2</p>
           <div class="fld" id="w-status"><h3 class="sl-q gm">이런 분,<br>신청하세요</h3><p class="sl-h">해당되는 것을 모두 골라 주세요 (중복 선택 가능)</p>
       <div class="checks">
         <label><input type="checkbox" name="status" value="회사 10년 차, 이직 생각 있음"><i></i><span>회사 10년 차, 이직 생각 있는 분</span></label>
@@ -392,7 +385,7 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
           <p class="call">📞 신청하시면 <b>담당자가 직접 전화</b>로 안내드립니다</p>
           <button class="submit" type="submit">선착순 신청하기</button>
           <p class="fine">행사장에서도 개인정보 동의 절차가 한 번 더 있습니다</p>
-          <button type="button" class="sl-back" data-back="1">← 이전</button>
+          <button type="button" class="sl-back" data-back="0">← 이전</button>
         </div></div>
       </div>
     </form>
@@ -404,6 +397,8 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
   <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46"/><path d="M30 52l13 13 27-29"/></svg>
   <h2 class="gm" id="doneT">등록되었습니다</h2>
   <p>담당자가 곧 전화로 안내드립니다.<br><small>행사장에서도 개인정보 동의 절차가 한 번 더 있습니다.</small></p>
+  <p class="with">함께 오실 분이 있으면<br>그분도 따로 신청해 주세요</p>
+  <button type="button" id="doneShare">함께 갈 분께 링크 보내기</button>
   <button type="button" id="doneClose">닫기</button>
 </div>
 
@@ -486,7 +481,7 @@ if (reduce || !hasGsap) {
 
 /* ── ⑤ 단계형 신청 시트 ── */
 const sheet = $('#sheet'), slides = $('#slides'), bar = $('#shBar'); let step = 0;
-const go = (i) => { step = i; slides.style.transform = 'translateX(-' + i * 100 + '%)'; bar.style.width = ((i + 1) / 3 * 100) + '%'; };
+const go = (i) => { step = i; slides.style.transform = 'translateX(-' + i * 100 + '%)'; bar.style.width = ((i + 1) / 2 * 100) + '%'; };
 const openSheet = (e) => { if (e) e.preventDefault(); sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; go(step); };
 const closeSheet = () => { sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; };
 $$('[data-open]').forEach((b) => b.addEventListener('click', openSheet));
@@ -498,8 +493,8 @@ $('[data-next="0"]').addEventListener('click', () => { $('#i-agree').checked = t
   let bad = false; for (const id in ok) { $('#' + id).classList.toggle('bad', !ok[id]); if (!ok[id]) bad = true; }
   if (!bad) go(1);
 });
-$$('[name=people]').forEach((x) => x.addEventListener('change', () => { $('#w-people').classList.remove('bad'); setTimeout(() => go(2), 280); }));
-const SLIDE_OF = { 'w-name': 0, 'w-phone': 0, 'w-agree': 0, 'w-people': 1 };
+
+const SLIDE_OF = { 'w-name': 0, 'w-phone': 0, 'w-agree': 0 };
 
 /* ── ⑤ 신청 폼 ── */
 const q = new URLSearchParams(location.search);
@@ -517,11 +512,11 @@ $('#f').addEventListener('submit', async e => {
   e.preventDefault();
   const f = e.target, v = {
     name: f.name.value.trim(), phone: phone.value.replace(/\D/g, ''),
-    people: (f.querySelector('[name=people]:checked') || {}).value || '',
+    people: '본인', // 동행은 따로 신청(2026-10-07 지점장님)
     status: [...f.querySelectorAll('[name=status]:checked')].map((x) => x.value).join(' / '),
     agree: $('#i-agree').checked, ad: $('#h-ad').value, set: $('#h-set').value
   };
-  const checks = { 'w-name': v.name.length > 0, 'w-phone': /^010\d{8}$/.test(v.phone), 'w-people': !!v.people, 'w-agree': v.agree };
+  const checks = { 'w-name': v.name.length > 0, 'w-phone': /^010\d{8}$/.test(v.phone), 'w-agree': v.agree };
   let first = null;
   for (const id in checks) { const ok = checks[id]; $('#' + id).classList.toggle('bad', !ok); if (!ok && !first) first = id; }
   if (first) { go(SLIDE_OF[first] || 0); return; }
@@ -540,6 +535,7 @@ $('#f').addEventListener('submit', async e => {
   $('#done').classList.add('show');
   $('#doneClose').focus();
 });
+$('#doneShare').addEventListener('click', async () => { const url = 'https://career-consult.github.io/seminar/?ad=ref'; try { if (navigator.share) { await navigator.share({ title: 'JOB SEMINAR 10.15', text: '10/15(목) 오전 10:30 코엑스 메가박스 7관 강연, 같이 신청해요', url }); return; } } catch (e) { if (e.name === 'AbortError') return; } try { await navigator.clipboard.writeText(url); alert('링크를 복사했습니다'); } catch { prompt('링크를 복사해 보내 주세요', url); } });
 $('#doneClose').addEventListener('click', () => $('#done').classList.remove('show'));
 })();
 </script>
