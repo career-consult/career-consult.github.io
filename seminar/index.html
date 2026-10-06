@@ -523,19 +523,21 @@ $('#f').addEventListener('submit', async e => {
 
   const btn = f.querySelector('button[type=submit]'); if (btn.disabled) return; btn.disabled = true; const label = btn.textContent; btn.textContent = '신청 중…';
   const tag = [v.ad && '소재 ' + v.ad, v.set && '타깃 ' + v.set].filter(Boolean).join(' / ');
+  const withWho = (q.get('with') || '').replace(/[\[\]]/g, '').slice(0, 30); // 동행: 먼저 신청한 사람 '이름·끝4자리' → 같은 담당에게(2026-10-07)
   const params = { user_name: v.name, user_phone: v.phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
     user_job: '[잡세미나] ' + (v.status || '상황 미선택'), user_time: '참석 ' + v.people,
-    send_time: new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) + '  [잡세미나 사전신청]' + (tag ? '  [' + tag + ']' : ''),
+    send_time: new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) + '  [잡세미나 사전신청]' + (tag ? '  [' + tag + ']' : '') + (withWho ? '  [동행: ' + withWho + ']' : ''),
     ad_id: v.ad, ad_set: v.set };
   try { await emailjs.send('service_x66ocbi', 'template_7b1xztu', params, { publicKey: 'tRnVoZ96PmFbQAoK9' }); }
   catch (err) { btn.disabled = false; btn.textContent = label; alert('신청이 전송되지 않았습니다. 잠시 뒤 다시 눌러 주세요. (' + (err.status || err.text || err.message || '오류') + ')'); return; }
   if (typeof fbq === 'function') fbq('track', 'CompleteRegistration', { content_name: '잡세미나_사전신청', ad_id: v.ad, ad_set: v.set }, { eventID: 'reg_' + Date.now() });
-  btn.disabled = false; btn.textContent = label; f.reset();
+  btn.disabled = false; btn.textContent = label; f.reset(); lastWho = v.name + '·' + v.phone.slice(-4);
   closeSheet();
   $('#done').classList.add('show');
   $('#doneClose').focus();
 });
-$('#doneShare').addEventListener('click', async () => { const url = 'https://career-consult.github.io/seminar/?ad=ref'; try { if (navigator.share) { await navigator.share({ title: 'JOB SEMINAR 10.15', text: '10/15(목) 오전 10:30 코엑스 메가박스 7관 강연, 같이 신청해요', url }); return; } } catch (e) { if (e.name === 'AbortError') return; } try { await navigator.clipboard.writeText(url); alert('링크를 복사했습니다'); } catch { prompt('링크를 복사해 보내 주세요', url); } });
+let lastWho = '';
+$('#doneShare').addEventListener('click', async () => { const url = 'https://career-consult.github.io/seminar/?ad=ref&with=' + encodeURIComponent(lastWho); try { if (navigator.share) { await navigator.share({ title: 'JOB SEMINAR 10.15', text: '10/15(목) 오전 10:30 코엑스 메가박스 7관 강연, 같이 신청해요', url }); return; } } catch (e) { if (e.name === 'AbortError') return; } try { await navigator.clipboard.writeText(url); alert('링크를 복사했습니다'); } catch { prompt('링크를 복사해 보내 주세요', url); } });
 $('#doneClose').addEventListener('click', () => $('#done').classList.remove('show'));
 })();
 </script>
