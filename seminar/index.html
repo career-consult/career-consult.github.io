@@ -169,8 +169,8 @@ a{color:inherit}
 .one{margin-top:10px;font-weight:800;font-size:15px;color:#8a6a20;text-align:center}
 .call{margin:6px 0 10px;text-align:center;font-size:15px;font-weight:700;color:#3a3122}
 .call b{color:#1b170f}
-.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;font-weight:700}
-.agree input{width:22px;height:22px;margin-top:1px;accent-color:#1b170f;flex:none}
+.fld label.agree,.agree{display:flex;gap:10px;align-items:center;font-size:13.5px;font-weight:700;margin-top:12px;line-height:1.45}
+.agree input{width:20px;height:20px;margin:0;padding:0;accent-color:#1b170f;flex:none;box-shadow:none}
 .more{font-size:13px;text-decoration:underline;color:#6b5a35;background:none;border:0;cursor:pointer;margin-left:4px}
 .prv{display:none;margin-top:10px;background:#efe6d0;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.65;color:#3a3122}
 .prv.open{display:block}
@@ -352,8 +352,11 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
     <div class="fld" id="w-phone"><label for="i-phone">연락처</label>
       <input type="tel" id="i-phone" name="phone" autocomplete="tel" inputmode="numeric" placeholder="010-0000-0000" value="010-" maxlength="13">
       <div class="err">010 포함 11자리를 적어 주세요</div></div>
+
+    
+          <button type="button" class="submit" data-next="0">동의하고 다음 →</button>
     <div class="fld" id="w-agree">
-      <label class="agree"><input type="checkbox" id="i-agree"><span>[필수] 개인정보 수집·이용에 동의합니다<button type="button" class="more" id="moreBtn" aria-expanded="false">내용보기</button></span></label>
+      <label class="agree"><input type="checkbox" id="i-agree"><span>[필수] 개인정보 수집·이용 동의<button type="button" class="more" id="moreBtn" aria-expanded="false">내용보기</button></span></label>
       <div class="prv" id="prv">
         <!-- 개인정보 보호법 제15조 제2항: ①목적 ②항목 ③보유·이용 기간 ④동의 거부 권리와 불이익 — 네 가지를 모두 알린다 -->
         <strong>수집·이용 목적</strong> 세미나 사전신청 접수, 참석 확인과 행사 안내(전화·문자), 담당자 안내 연락<br>
@@ -363,8 +366,6 @@ footer{padding:28px 0 120px;border-top:1px solid #221d14;font-size:12px;color:#8
         <strong>현장 안내</strong> 행사장에서도 개인정보 수집·이용 동의 절차가 한 번 더 있습니다
       </div>
       <div class="err">동의하셔야 신청할 수 있습니다</div></div>
-    
-          <button type="button" class="submit" data-next="0">다음 →</button>
         </div></div>
         <div class="sl"><div class="sl-in">
           <p class="sl-n">STEP 2 / 3</p><h3 class="sl-q gm">몇 분이<br>오시나요?</h3><p class="sl-h">고르시면 바로 다음으로 넘어갑니다</p>
@@ -492,7 +493,7 @@ $$('[data-open]').forEach((b) => b.addEventListener('click', openSheet));
 $('#shClose').addEventListener('click', closeSheet);
 sheet.addEventListener('click', (e) => { if (e.target === sheet) closeSheet(); });
 $$('[data-back]').forEach((b) => b.addEventListener('click', () => go(+b.dataset.back)));
-$('[data-next="0"]').addEventListener('click', () => {
+$('[data-next="0"]').addEventListener('click', () => { $('#i-agree').checked = true;
   const ok = { 'w-name': $('#i-name').value.trim().length > 0, 'w-phone': /^010\d{8}$/.test($('#i-phone').value.replace(/\D/g, '')), 'w-agree': $('#i-agree').checked };
   let bad = false; for (const id in ok) { $('#' + id).classList.toggle('bad', !ok[id]); if (!ok[id]) bad = true; }
   if (!bad) go(1);
