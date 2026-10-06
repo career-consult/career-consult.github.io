@@ -476,7 +476,7 @@ if (reduce || !hasGsap) {
   const mm = gsap.matchMedia();
   $$('.card .tilt').forEach((t, i) => gsap.from(t, { rotateX: 38, y: 120, scale: .86, opacity: 0, ease: 'power3.out', scrollTrigger: { trigger: t.parentNode, start: 'top 98%', end: 'top 45%', scrub: .5 } }));
   mm.add('(max-width: 899px)', () => {
-    gsap.to('.card:first-child .flip', { scale: .9, filter: 'brightness(.55)', ease: 'none',
+    gsap.to('.card:first-child', { scale: .9, filter: 'brightness(.55)', ease: 'none', // 2026-10-06: .flip에 걸면 인라인 transform이 뒤집기(rotateY)를 덮어 이호선 카드가 안 뒤집혔다 → 바깥 틀에
       scrollTrigger: { trigger: '.card:nth-child(2)', start: 'top 70%', end: 'top 92px', scrub: true } });
   });
 
