@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<!-- 2026-10-06 v8 실제판 — 원본 v8_튜토리얼_시안/index.html(문구·화면 그대로) + v5 cf_live 연동(메일·픽셀·Clarity·추적값·재신청 막기). 게시 전 상태. -->
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1516166836561884');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1516166836561884&ev=PageView&noscript=1"></noscript>
+<!-- End Meta Pixel Code -->
+<!-- Microsoft Clarity -->
+<script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "y8p7vr3cpg");
+</script>
+<!-- End Microsoft Clarity -->
+<meta name="facebook-domain-verification" content="mcwrz0pqiyfiojp0uc847vxv6n1lz2">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="color-scheme" content="light only">
+<title>보험설계사 채용 상담</title>
+<meta name="description" content="경력 무관, 시작 비용 없음. 첫 11개월 신인 지원 제도가 있는 생명보험사 전속 조직에서 보험설계사(위촉직)를 모집합니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="처음 도전하는 분께 — 신인지원금만 최대 1억 1,500만원">
+<meta property="og:description" content="11개월 · 매월 지급 · 실적 구간별. 계약 수수료·시책·팀원 실적 수당은 별도. 시작 비용 0원.">
+<!-- 게시 주소 fc-jiwon.pages.dev (2026-10-06 새 클라우드플레어 프로젝트 — fc-start 는 기존 광고용으로 그대로) -->
+<meta property="og:url" content="https://career-consult.github.io/start/">
+<meta property="og:image" content="https://career-consult.github.io/start/og_recruit.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="author" content="생명보험사 전속 조직 채용 안내">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/GmarketSans/GmarketSans.css">
+
+
+<style>
+
+/* 2026-10-06 v8 시안 — 지점장님 "랜딩 자체를 튜토리얼처럼: 질문에 답하면 스크롤이 내려가며 정보도 얻고, 궁금한 걸 습득하다 결국 신청까지".
+   구조: 첫 화면(최대·11개월·별도 + ? 막대) → 질문 1~4(답마다 그 답에 맞는 정보 카드가 펼쳐짐) → 질문 5 = 이름·번호 → 본인 확인 → 완료.
+   받는 항목은 v5와 같음(영업 경험·나이대·직업·통화 시간·이름·번호·동의) + 시작 갈래 + '가장 걱정되는 것'(정보 갈래만, 첫 통화 참고용).
+   레이아웃: 폰 한 줄 기둥(최대 440px), 밝은 바탕 + 영상 v20의 남색 글자·금색 강조. 단일 밝은 테마. */
+:root{
+  color-scheme:light;
+  --bg:#F4F6FB; --panel:#FFFFFF; --panel2:#EEF2FA; --line:rgba(20,30,60,.12);
+  --ink:#141B2D; --sub:#3B4660; --mut:#5E6880; --gold:#9C6A00; --goldbg:#F5D58A; --goldink:#2A2000; --navy:#1F2E5A; --soft:#FFF7E3;
+  --f:#C93C58; --m:#2A73B8; --warn:#C0392B;
+  --font:'Gmarket Sans','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55;word-break:keep-all;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.03em}
+.wrap{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:0 80px;display:flex;flex-direction:column;gap:18px}
+.chip{display:inline-flex;align-self:flex-start;font-size:12px;font-weight:700;color:var(--sub);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+.chip b{color:var(--gold)}
+/* 진행 표시 — 위에 붙음 */
+.track{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px 8px;display:flex;flex-direction:column;gap:6px}
+.track .lb{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--gold)}
+.track .tr{height:6px;border-radius:99px;background:var(--panel2);overflow:hidden}
+.track .tr i{display:block;height:100%;width:100%;background:var(--goldbg);transform-origin:left;transform:scaleX(.03);transition:transform .4s ease}
+/* 첫 화면 */
+.hero{display:flex;flex-direction:column;gap:10px;padding-top:8px}
+.hero .eyebrow{font-size:17px;font-weight:700;color:var(--sub)}
+.hero h1{font-size:27px;font-weight:700;line-height:1.25}
+.hero .big{display:block;font-size:44px;color:var(--navy);letter-spacing:-.04em;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums;text-decoration:underline;text-decoration-color:var(--goldbg);text-decoration-thickness:10px;text-underline-offset:-4px;text-decoration-skip-ink:none}
+.terms{display:flex;flex-wrap:wrap;gap:6px}
+.terms span{font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;background:var(--panel2);color:var(--sub)}
+.plus{font-size:14px;color:var(--sub)}.plus b{color:var(--gold)}
+.gapcard{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.gapcard h2{font-size:18px;font-weight:700}
+.gapcard p{font-size:14px;color:var(--sub)}
+.bars{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;align-items:end;height:90px;margin-top:6px}
+.bars i{display:block;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#7E97D6,#3B5196);position:relative}
+.bars i::after{content:"?";position:absolute;inset:auto 0 calc(100% + 2px);text-align:center;font-size:12px;font-weight:700;color:var(--gold)}
+.axis{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;font-size:12px;color:var(--mut);text-align:center}
+/* 대화 흐름 */
+#flow[hidden]{display:none}
+#flow{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--soft);border:2px solid var(--goldbg);border-radius:20px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:60px}
+.q .no{font-size:12px;font-weight:700;color:var(--gold)}
+.q h2{font-size:21px;font-weight:700}
+.q .why{font-size:13px;color:var(--mut)}
+.opts{display:flex;flex-direction:column;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.row4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.row4 .opt,.compact .opt{justify-content:center;text-align:center;padding:14px 8px;font-size:15px}
+.compact .opt:last-child:nth-child(odd){grid-column:1/-1}
+.opt{all:unset;box-sizing:border-box;width:100%;padding:11px 14px;border-radius:12px;background:var(--panel);border:1.5px solid var(--line);font-size:14px;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:8px;cursor:pointer}
+.opt:hover,.opt:focus-visible{border-color:var(--gold);outline:none}
+.opt.sel{border-color:var(--gold);background:var(--goldbg)}
+.opt small{font-size:12px;color:var(--mut)}
+/* 답한 질문은 말풍선으로 접힘 */
+.ans{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.ans .qq{font-size:12px;color:var(--mut)}
+.ans .bubble{background:var(--navy);color:#fff;font-weight:700;font-size:15px;padding:10px 14px;border-radius:16px 16px 4px 16px;max-width:85%}
+.ans .edit{all:unset;cursor:pointer;font-size:12px;color:var(--gold);font-weight:700}
+/* 정보 카드 */
+.info{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 4px 14px rgba(20,30,60,.06);animation:rise .45s ease both}
+.info .tag{font-size:12px;font-weight:700;color:var(--gold)}
+.info h3{font-size:19px;font-weight:700;line-height:1.35}
+.info p{font-size:14px;color:var(--sub)}
+.info ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--sub)}
+.info .fine{font-size:12px;color:var(--mut)}
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
+.case{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--bg);border-radius:12px;padding:10px 12px;box-shadow:inset 5px 0 0 var(--sx)}
+.case.f{--sx:var(--f)}.case.m{--sx:var(--m)}
+.case .who{min-width:0;font-size:12px;color:var(--mut);line-height:1.4}
+.case .who b{display:block;font-size:15px;color:var(--ink)}
+.sx{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:var(--sx);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:1px}
+.case .now{text-align:right;font-size:14px;font-weight:700;line-height:1.35}
+.case .now em,.info em{font-style:normal;color:var(--gold)}
+.steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.steps4 div{background:var(--bg);border-radius:10px;padding:10px 8px;font-size:12px;font-weight:700;color:var(--sub);display:flex;flex-direction:column;gap:2px}
+.steps4 small{font-weight:500;color:var(--mut);font-size:12px}
+.blur{filter:blur(4px);user-select:none}
+/* 마지막 입력 */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label,.flabel{font-size:13px;font-weight:700;color:var(--sub)}
+.field input{font:inherit;font-size:16px;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink)}
+.field input:focus{outline:none;border-color:var(--gold)}
+.notice{font-size:12px;color:var(--mut);line-height:1.5;margin:0}
+.agree{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--sub)}
+.agree input{margin-top:3px;accent-color:var(--gold)}
+.err{font-size:13px;color:var(--warn);min-height:1em}
+.cta{all:unset;box-sizing:border-box;width:100%;text-align:center;padding:12px;border-radius:12px;background:var(--goldbg);color:var(--goldink);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(156,106,0,.25)}
+.cta:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.confirm{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:baseline;background:var(--panel);border:1.5px solid var(--goldbg);border-radius:14px;padding:14px 16px}
+.confirm span{font-size:13px;color:var(--mut)}
+.confirm b{font-size:18px;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.done{text-align:center;align-items:center}
+.legal{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--mut)}
+.legal .warn{color:var(--warn);font-weight:700}
+.arow{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--panel);border:1.5px solid var(--line)}
+.arow:hover,.arow:focus-visible{border-color:var(--gold);outline:none}
+.arow .ab{font-size:17px;font-weight:700;color:var(--navy)}
+.arow .at{min-width:0;display:flex;flex-direction:column;gap:2px}
+.arow .at b{font-size:14px}
+.arow .at em{font-style:normal;font-size:13px;font-weight:700;color:var(--gold)}
+.badge{align-self:flex-start;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--panel2);color:var(--mut)}
+.badge.real{background:var(--soft);color:var(--gold)}
+.gapcard .gk{font-size:12px;font-weight:700;color:var(--gold)}
+.gapcard h1{font-size:25px;font-weight:700;line-height:1.3}
+.gapcard h1 em{white-space:nowrap}
+.gapcard h1 em,.gapcard h2 em{font-style:normal;color:var(--gold)}
+.bill{position:relative;background:var(--bg);border:1.5px dashed var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;font-size:14px;font-variant-numeric:tabular-nums}
+.bill .bh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:2px}
+.bill .bh span{font-size:12px;color:var(--mut)}
+.bill .bl,.bill .bt{display:flex;justify-content:space-between;color:var(--sub)}
+.bill i{font-style:normal}
+.bill .bt{border-top:1px solid var(--line);padding-top:8px;margin-top:2px;font-weight:700;color:var(--ink)}
+.bill .stamp{position:absolute;right:14px;top:50%;transform:translateY(-50%) rotate(-12deg);border:2.5px solid var(--warn);color:var(--warn);font-weight:700;font-size:15px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.85)}
+.q.locked{background:var(--panel);border-color:var(--line);gap:8px}
+.q.locked .why{display:none}
+.q.locked button:not(.chosen){opacity:.55}
+.q.locked button.chosen{opacity:1;border-color:var(--gold);background:var(--goldbg);color:var(--goldink)}
+.q.locked button.chosen em,.q.locked button.chosen b,.q.locked button.chosen .ab{color:var(--goldink)}
+.q .edit{all:unset;cursor:pointer;align-self:flex-end;font-size:12px;font-weight:700;color:var(--gold);padding:4px 2px}
+.opt.pick{align-items:center}
+.opt.pick .pt{min-width:0;display:flex;flex-direction:column;gap:3px}
+.opt.pick .pt b{font-size:16px}
+.opt.pick .pt span{font-size:13px;font-weight:500;color:var(--sub);line-height:1.4}
+.opt.pick .pt em{font-style:normal;font-weight:700;color:var(--gold)}
+.q.locked button.chosen .pt span,.q.locked button.chosen .pt em{color:var(--goldink)}
+.opt.pick{align-items:center;border:1.5px solid color-mix(in srgb,var(--c) 35%,transparent);border-left:7px solid var(--c);background:color-mix(in srgb,var(--c) 7%,var(--panel));padding:14px 14px 14px 14px}
+.opt.pick .pt b{color:var(--c)}
+.opt.pick small{color:var(--c);font-size:16px;font-weight:700}
+.opt.pick:hover,.opt.pick:focus-visible{border-color:var(--c);border-left-color:var(--c);box-shadow:0 4px 14px color-mix(in srgb,var(--c) 22%,transparent)}
+.q.locked button.pick.chosen{background:color-mix(in srgb,var(--c) 16%,var(--panel));border-color:var(--c)}
+.q.locked button.pick.chosen .pt b{color:var(--c)}
+.q.locked button.pick.chosen .pt span{color:var(--sub)}
+.bill .stamp{cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;animation:stampPulse 1.8s ease-in-out infinite}
+.bill .stamp small{font-size:12px;font-weight:700;color:var(--warn);opacity:.85}
+.bill .stamp.open{animation:none;opacity:.35}
+@keyframes stampPulse{0%,100%{transform:translateY(-50%) rotate(-12deg) scale(1)}50%{transform:translateY(-50%) rotate(-12deg) scale(1.08)}}
+.lead{display:flex;flex-direction:column;gap:10px;border-top:1px dashed var(--line);padding-top:12px;animation:rise .4s ease both}
+.lead[hidden],.leaddone[hidden],.peek[hidden],#openLead[hidden]{display:none}
+.lead .lh{font-size:15px;font-weight:700}
+.opt-t{font-weight:500;color:var(--mut)}
+.leadbox{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.leaddone{background:var(--soft);border:1.5px solid var(--goldbg);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6}
+.leaddone .edit{all:unset;cursor:pointer;font-size:12px;font-weight:700;color:var(--gold);margin-left:4px}
+.peek{all:unset;cursor:pointer;align-self:center;font-size:13px;font-weight:700;color:var(--sub);padding:6px 10px}
+.cases-in h2{background:linear-gradient(90deg,var(--ink),var(--gold),var(--ink));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 3s linear infinite}
+@keyframes sheen{to{background-position:-200% 0}}
+.cases-in .opt.pick{animation:flyin .5s cubic-bezier(.2,.8,.2,1) both}
+.cases-in .opt.pick:nth-child(2){animation-delay:.08s}.cases-in .opt.pick:nth-child(3){animation-delay:.16s}.cases-in .opt.pick:nth-child(4){animation-delay:.24s}.cases-in .opt.pick:nth-child(5){animation-delay:.32s}.cases-in .opt.pick:nth-child(6){animation-delay:.4s}
+@keyframes flyin{from{opacity:.001;transform:translateX(-24px) scale(.97)}to{opacity:1;transform:none}}
+.cases-in:not(.locked) .opt.pick{position:relative;overflow:hidden}
+.cases-in:not(.locked) .opt.pick::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);transform:translateX(-120%);animation:shine 4.8s ease-in-out infinite}
+.cases-in .opt.pick:nth-child(2)::after{animation-delay:.8s}.cases-in .opt.pick:nth-child(3)::after{animation-delay:1.6s}.cases-in .opt.pick:nth-child(4)::after{animation-delay:2.4s}.cases-in .opt.pick:nth-child(5)::after{animation-delay:3.2s}.cases-in .opt.pick:nth-child(6)::after{animation-delay:4s}
+@keyframes shine{0%,70%{transform:translateX(-120%)}85%,100%{transform:translateX(120%)}}
+@media (prefers-reduced-motion:reduce){.bill .stamp,.cases-in h2,.cases-in .opt.pick,.cases-in .opt.pick::after,.lead{animation:none}.cases-in h2{color:var(--ink);background:none}}
+.opt.pick.mini .ic{font-size:19px;line-height:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.opt.pick.mini{flex-direction:column;gap:3px;justify-content:center;align-items:center;text-align:center;padding:9px 4px;font-size:13px;font-weight:700;color:var(--ink);background:var(--panel);border:1.5px solid var(--line)}
+.opt.pick.mini:hover,.opt.pick.mini:focus-visible{border-color:var(--gold);box-shadow:none}
+.q.locked button.pick.mini.chosen{background:var(--goldbg);border-color:var(--gold);color:var(--goldink)}
+@media (max-width:340px){.grid3{grid-template-columns:repeat(2,1fr)}}
+.vhook{margin:-16px -16px 6px;padding:28px 22px 24px;border-radius:18px 18px 0 0;background:radial-gradient(120% 90% at 0% 0%,#2A4C9A 0%,transparent 60%),radial-gradient(90% 80% at 100% 100%,#4B2F8F 0%,transparent 60%),#0B0F1A;color:#EEF1F8;display:flex;flex-direction:column;gap:14px}
+.vhook .vk{align-self:flex-start;font-size:12px;font-weight:800;color:#2A2000;background:#F5D58A;border-radius:999px;padding:5px 12px}
+.vhook h1{font-size:24px;font-weight:700;line-height:1.5;color:#EEF1F8;margin-top:6px}
+.vhook h1 em{font-style:normal;color:#F5D58A;white-space:nowrap}
+.vhook p{font-size:15px;font-weight:700;color:#C9D1E3;line-height:1.5;margin-top:6px}
+.vhook .vfine{font-size:12px;color:#AAB2C6;border-top:1px solid rgba(255,255,255,.12);padding-top:12px;margin-top:6px}
+.gapcard{overflow:hidden}
+.vhook .why{display:inline-block;margin-left:4px;padding:2px 12px;border-radius:12px;background:#F5D58A;color:#2A2000;font-size:.95em;transform-origin:50% 100%;animation:whyFloat 2.4s ease-in-out infinite;box-shadow:0 8px 18px rgba(245,213,138,.35)}
+@keyframes whyFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.vhook .why{animation:none}}
+.faq{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.faq h2{font-size:20px;font-weight:700}
+.faq .why{font-size:13px;color:var(--mut);margin-bottom:4px}
+.faq details{border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.faq summary{list-style:none;cursor:pointer;padding:11px 36px 11px 12px;font-size:14px;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:20px;font-weight:700;color:var(--gold)}
+.faq details[open] summary::after{content:"−"}
+.faq details[open]{background:var(--soft);border-color:var(--goldbg)}
+.faq details p{margin:0;padding:0 14px 14px;font-size:14px;color:var(--sub);line-height:1.6}
+.faq details p b{color:var(--ink)}
+.bill .stamp{font-size:18px;padding:10px 16px;border-width:3px;animation:stampPush 1.3s ease-in-out infinite}
+.bill .stamp small{font-size:12px;font-weight:800}
+@keyframes stampPush{0%,100%{transform:translateY(-50%) rotate(-12deg) scale(1);box-shadow:0 0 0 0 rgba(192,57,43,.45)}50%{transform:translateY(-50%) rotate(-12deg) scale(1.12);box-shadow:0 0 0 12px rgba(192,57,43,0)}}
+.bill .blur{animation:blurBlink 2.6s ease-in-out infinite}
+@keyframes blurBlink{0%,100%{opacity:.55}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.bill .stamp,.bill .blur{animation:none}}
+.urg{background:var(--panel);border:2px solid var(--warn);border-radius:18px;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.urg .tag{align-self:flex-start;font-size:12px;font-weight:700;color:#fff;background:var(--warn);border-radius:999px;padding:4px 10px}
+.urg h2{font-size:21px;font-weight:700;line-height:1.4}
+.urg h2 em{font-style:normal;color:var(--warn)}
+.urg .news{background:var(--bg);border-left:4px solid var(--ink);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.urg .news{text-decoration:none;color:inherit;cursor:pointer}
+.urg .news .go{font-size:12px;font-weight:700;color:var(--gold);margin-top:2px}
+.urg .news small{font-size:12px;color:var(--mut)}
+.urg .news b{font-size:14px;line-height:1.45}
+.urg .pts{display:grid;grid-template-columns:20px 1fr;gap:10px 10px;align-items:start;font-size:14px;color:var(--sub);line-height:1.6}
+.urg .pts i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.urg .pts b{color:var(--ink)}
+.urg,.urg *{font-family:var(--font)}
+.urg h2,.urg .news b{text-wrap:balance}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ctile{all:unset;box-sizing:border-box;min-width:0;cursor:pointer;background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.ctile:hover,.ctile:focus-visible{border-color:var(--gold);outline:none}
+.ctile .cm{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:6px}
+.ctile b{font-size:14px;line-height:1.35}
+.ctile .cr{font-size:13px;font-weight:700;color:var(--sub);line-height:1.35}
+.ctile .cr em{font-style:normal;color:var(--gold)}
+.sx.f{--sx:var(--f)}.sx.m{--sx:var(--m)}
+.tl{display:grid;grid-template-columns:repeat(15,1fr);gap:3px;align-items:end;height:56px;margin-top:4px}
+.tl i{display:block;height:100%;border-radius:4px;background:var(--panel2);position:relative}
+.tl i.on{background:var(--goldbg)}
+.tl i span{position:absolute;inset:auto 0 3px;text-align:center;font-size:12px;color:var(--mut)}
+.tl i.on span{color:var(--goldink);font-weight:700}
+.tlx{display:flex;justify-content:space-between;font-size:12px;color:var(--mut)}
+@media (prefers-reduced-motion:reduce){.info{animation:none}.track .tr i{transition:none}}
+/* 실제판 추가 — 재신청 안내 창 · 허위 신청 경고(v5 문구) */
+.legal a{color:inherit}
+.dup{position:fixed;inset:0;z-index:20;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.dup[hidden]{display:none}
+.dupbox{background:var(--panel);border-radius:18px;max-width:380px;width:100%;padding:24px 20px;display:flex;flex-direction:column;gap:12px;text-align:center}
+.dupbox .dupic{font-size:34px;line-height:1}
+.dupbox h2{font-size:19px;font-weight:700}
+.dupbox p{font-size:15px;color:var(--sub);line-height:1.6}
+.dupbox .opt{justify-content:center}
+.dupbox .leaddone[hidden]{display:none}
+.fakewarn{background:#FEF2F2;border:1px solid #FCA5A5;color:#7F1D1D;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="track" aria-hidden="true"><div class="lb"><span id="tlb">내 정착지원금 대상 확인</span><span id="tno"></span></div><div class="tr"><i id="tbar"></i></div></div>
+
+  <!-- 10/6 지점장님 "첫 화면이 반복적" → 추천안 A: 첫 화면과 4,900만원 카드를 하나로 합침(큰 1억 1,500만원 제목 삭제, 금액 조건은 카드 아래 작은 글씨로 유지) -->
+  <span class="chip">보험설계사 <b>(위촉직)</b>&nbsp;모집 · 정규직 채용 아님</span>
+
+  <section class="gapcard" id="gap" aria-labelledby="gap-h">
+    <!-- 동의 체크칸 없음(10/6 지점장님 "명세서 받기 누르면 자동 동의"): 2024.9.15 시행령 — 상담 요청 처리에 꼭 필요한 정보는 동의 없이 수집, 대신 항목·목적·보유기간 고지. 체크칸을 미리 체크해 두는 방식은 쓰지 않음. -->
+    <!-- 10/6 지점장님 "우리 영상과 비슷한 느낌" — 첫 화면은 릴스 v20의 질문(왜 신인에게 11개월을 줄까요?)과 마지막 말(영업이 처음이라면, 구조부터 확인해 보세요)을 이어받고, 영상처럼 남색+금색. -->
+    <!-- (이전) 10/6 지점장님: "신인마다 최대 4,900만원 차이 납니다! 어떤 차이점이 있을까요? 나는 어떨까요?" · 도장을 누르면 이름·번호 칸이 바로 열리고 자동입력으로 정보를 먼저 받는다.
+         4,900만원 = 정착지원금 11개월 합계 구간 6,600만~1억 1,500만원의 차이(신인정착챕터·시장개발 지침). -->
+    <div class="vhook">
+      <span class="vk">대한민국 월평균 임금 1위 산업 · 금융·보험업</span>
+      <h1 id="gap-h">영업을 처음 하는 신인에게 <span class="why">왜?</span><br>정착지원금을<br><em>최대 1억 1,500만원</em>이나 줄까요?</h1>
+      <p>내가 받을 수 있는지 확인부터 해 보세요!</p>
+      <small class="vfine">최대 금액 · 11개월 실적 구간별 지급 · 수수료·시책·팀 수당 별도</small>
+    </div>
+    <div class="bill" aria-label="내 정착지원금 명세서, 금액은 입력하면 알려 드림">
+      <div class="bh"><b>내 정착지원금 명세서</b><span id="billName">성함 ○○○</span></div>
+      <div class="bl"><span>1개월</span><i class="blur">▒▒▒만원</i></div>
+      <div class="bl"><span>2개월</span><i class="blur">▒▒▒만원</i></div>
+      <div class="bl"><span>…</span><i></i></div>
+      <div class="bl"><span>11개월</span><i class="blur">▒,▒▒▒만원</i></div>
+      <div class="bt"><span>11개월 합계</span><i class="blur">▒억 ▒,▒▒▒만원</i></div>
+      <button class="stamp" id="stamp" type="button">입력하면 알려 드려요<small>👆 눌러서 내 금액 확인</small></button>
+    </div>
+    <p class="fine">정착지원금 11개월 합계 6,600만~최대 1억 1,500만원 · 실적 구간별 · 수수료·시책·팀 수당 별도</p>
+  </section>
+
+  
+
+  <!-- 10/6 지점장님 "내 정착지원금 확인하기는 밑에, 당신은 어떤 조건인가요?를 위로" -->
+  <section class="leadbox" id="leadbox" aria-label="내 정착지원금 확인">
+    <button class="cta" id="openLead" type="button">내 정착지원금 확인하기</button>
+    <form id="lead" class="lead" hidden novalidate>
+      <p class="lh">정착지원금 확인 결과를 받으실 분</p>
+      <div class="field"><label for="nm">성함</label><input id="nm" name="name" autocomplete="name" enterkeyhint="next" placeholder="홍길동"></div>
+      <div class="field"><label for="ph">휴대폰 번호</label><input id="ph" name="tel" type="tel" inputmode="numeric" autocomplete="tel" maxlength="13" enterkeyhint="next" placeholder="010-0000-0000"></div>
+      <p class="notice">신청하시면 상담 연락을 위해 성함·연락처를 수집하며, 채용 상담 목적으로만 쓰고 1년 후 파기합니다. 원치 않으시면 신청하지 않으셔도 됩니다.</p>
+      <p class="err" id="lerr"></p>
+      <button class="cta" type="submit">내 정착지원금 확인하기</button>
+    </form>
+    <div id="leadDone" class="leaddone" hidden></div>
+  </section>
+
+  <!-- 10/6 지점장님 "이름·전화번호 쓰면 당신은 어떤 조건인가요가 나와야지" — 번호를 넣은 뒤에 열린다 -->
+  <div id="flow" aria-live="polite" hidden></div>
+
+  <footer class="legal">
+    <span class="warn">본 모집은 보험설계사(위촉직) 모집이며, 정규직 채용과 무관합니다.</span>
+    <span>소득은 개인의 활동 실적에 따라 달라질 수 있습니다. 정착지원금은 최대 금액이며 11개월 동안 실적 구간별로 지급됩니다.</span>
+    <span>실제 사례는 본인 동의·이름 비공개입니다. 개인의 결과이며 같은 결과를 보장하지 않습니다.</span>
+    <span>수집 항목: 이름, 연락처, 나이대, 직업, 연락 가능 시간대, (보험 경력자) 이직 사유·최근 1년 소득 3천만원 초과 여부·이직 의향 · 목적: 채용 상담 연락 · 보유: 1년 후 파기</span>
+    <span>[개인정보 처리 안내] 수집일로부터 1년간 보유 후 파기하며, 채용 상담 목적 외에는 쓰지 않습니다. 문의: <a href="mailto:dyepd1987@gmail.com">dyepd1987@gmail.com</a></span>
+  </footer>
+</main>
+
+<!-- 2026-09-25 재신청 안내(v5 와 같은 문구) — 이 폰에서 이미 신청했거나 서버가 같은 번호라고 답하면 -->
+<div id="dupNotice" class="dup" role="dialog" aria-modal="true" aria-labelledby="dupH" hidden>
+  <div class="dupbox">
+    <div class="dupic" aria-hidden="true">😊</div>
+    <h2 id="dupH">이미 신청해 주셨어요</h2>
+    <p>담당자가 곧 연락드려요.<br>아직 전화가 없었다면 아래 버튼을 눌러 주세요.</p>
+    <button type="button" class="cta" id="dupNudge">빨리 연락 받기</button>
+    <p class="leaddone" id="dupNudgeDone" hidden>담당자에게 전달했어요. 곧 전화드릴게요.</p>
+    <button type="button" class="opt" id="dupClose">닫기</button>
+  </div>
+</div>
+
+<script>
+// 10/6 지점장님 "숫자마다 자동으로 하이픈, 휴대폰 번호가 더 입력되지 못하게" — 칠 때마다 010-0000-0000 모양, 숫자 11자리까지만.
+// 자동입력(+82 10…, 공백·하이픈 섞인 값)도 같은 모양으로 맞춘다.
+// 생년월일도 같은 방식 — 칠 때마다 1990.03.15 모양, 숫자 8자리까지. 6자리(900315)로 치면 칸을 벗어날 때 1990.03.15로 바꾼다.
+const fmtBd = d => d.length <= 4 ? d : d.length <= 6 ? `${d.slice(0, 4)}.${d.slice(4)}` : `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6)}`;
+document.addEventListener('input', e => { if (e.target.id !== 'bd') return; const d = e.target.value.replace(/\D/g, '').slice(0, 8); e.target.value = fmtBd(d); if (d.length === 8 && e.inputType !== 'deleteContentBackward') e.target.blur(); });
+// 성함 칸에서 '다음'(엔터)을 누르면 번호 칸으로
+document.addEventListener('keydown', e => { if (e.target.id === 'nm' && e.key === 'Enter') { e.preventDefault(); const nx = e.target.form && e.target.form.querySelector('#ph'); if (nx) nx.focus(); } });
+document.addEventListener('focusout', e => {
+  if (e.target.id !== 'bd') return;
+  const d = e.target.value.replace(/\D/g, '');
+  if (d.length === 6) { const y = +d.slice(0, 2); e.target.value = fmtBd(String(y > 26 ? 1900 + y : 2000 + y) + d.slice(2)); }
+});
+document.addEventListener('input', e => {
+  if (e.target.id !== 'ph') return;
+  let d = e.target.value.replace(/\D/g, '');
+  if (d.startsWith('82')) d = '0' + d.slice(2);
+  d = d.slice(0, 11);
+  e.target.value = d.length < 4 ? d : d.length < 8 ? `${d.slice(0, 3)}-${d.slice(3)}` : `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
+  // 10/6 지점장님 "다 입력하면 자동으로 다음 칸으로" — 11자리가 차면 생년월일 칸(없으면 키보드 닫기)
+  if (d.length === 11 && e.inputType !== 'deleteContentBackward') { e.target.blur(); }
+});
+
+// 10/6 지점장님: "정보를 하나도 못 주고 있잖아. 사례 9개를 보여 주면서 본인은 어디에 해당되는지 고르게 하고(직업·나이·성별을 알 수 있고),
+// 신규/보험 경력을 고르면 지원금 받는 시기가 나오게 — 신인은 바로, 경력자는 15개월." → 고르는 것 자체가 정보가 되게.
+// 사례 원문: v5 랜딩 '처음 시작한 사람들, 1년 뒤' 9명(본인 동의). 성별은 지점장님이 확인한 6명만 표시(정·김34·박은 미확인 → 표시 안 함).
+// 직업 칸은 사례 출신으로 미리 골라 두고 마지막 화면에서 본인이 바꿀 수 있음(사례→직업 대응은 한림 추정).
+const CASES = [
+  { id: 'c1', name: '최OO', age: 32, band: '30대', sx: 'f', from: '무역회사 직장인', job: '직장인', big: '<em>10개월</em> 만에 부지점장', pt: '영업 1년 차에 MDRT 달성' },
+  { id: 'c2', name: '김OO', age: 31, band: '30대', sx: 'f', from: '지인 영업 없이 시작', job: '', big: '<em>11개월</em> 만에 부지점장', pt: '지인 영업·지인 도입 없이 DB 영업만으로' },
+  { id: 'c3', name: '이OO', age: 28, band: '20대', sx: 'm', from: '경영학과 졸업 · 사회 초년생', job: '구직 중·취업 준비', big: '<em>4개월</em> 만에 부팀장', pt: '금융권 진로를 꿈꾸다 영업에 도전' },
+  { id: 'c4', name: '박OO', age: 26, band: '20대', sx: '', from: '24살에 첫 도전', job: '구직 중·취업 준비', big: '직접 도입 4명 · <em>팀장</em>', pt: '자격증 공부와 스피치 연습으로 성장' },
+  { id: 'c5', name: '김OO', age: 34, band: '30대', sx: '', from: '중고차 영업 출신', job: '직장인', big: '<em>12개월</em> 만에 부지점장', pt: '직접 도입 6명 · 간접 도입 6명' },
+  { id: 'c6', name: '장OO', age: 37, band: '30대', sx: 'm', from: '프리랜서', job: '프리랜서·기타', big: '<em>11개월</em> 동안 매월 <em>2,000만원</em> 이상', pt: '직접 도입 4명으로 팀장 유지' },
+  { id: 'c7', name: '정OO', age: 40, band: '40대', sx: '', from: '전기공학 · 기업 영업 출신', job: '직장인', big: '<em>1년</em> 만에 수석부지점장', pt: '영업을 하러 왔다가 관리자의 길을 선택' },
+  { id: 'c8', name: '유OO', age: 51, band: '50대 이상', sx: 'f', from: '학원 강사 출신', job: '직장인', big: '<em>7개월</em> 만에 팀장', pt: '영업에 관리자 비전까지 보고 전향' },
+  { id: 'c9', name: '문OO', age: 55, band: '50대 이상', sx: 'm', from: '자영업 · 개인사업 출신', job: '자영업·사업', big: '입사 <em>10개월</em>에 MDRT', pt: '높은 월세·자재비 부담에 보험업으로 전향' }
+];
+const CATS = [
+  { k: '직장인', color: '#2F5FB3', label: '직장인', icon: '💼', sub: '영업은 처음, <em>10개월 만에 부지점장</em>', ra: '직장인이라면', job: '직장인', ex: '퇴근 후부터 준비해 옮기는 경우', path: '퇴근 후 시간에 상담·교육부터 시작합니다. 입사하면 첫 달은 선배와 같이 상담에 가고, 정착지원금으로 수입이 자리 잡을 때까지 버팁니다.' },
+  { k: '자영업', color: '#C2611F', label: '자영업', icon: '🏪', sub: '월세·자재비 대신 내 사업처럼, <em>입사 10개월에 MDRT</em>', ra: '자영업이라면', job: '자영업·사업', ex: '가게 고정비 없이 다시 시작하는 경우', path: '월세·재료비 같은 고정비 없이, 고객을 만나는 일로 바꿉니다. 사장님으로 일해 본 경험(사람 상대, 숫자 관리)이 그대로 쓰입니다.' },
+  { k: '구인·구직 중', color: '#1E8A5A', label: '구인구직', icon: '🔍', sub: '금융권을 꿈꾸다 도전, <em>4개월 만에 부팀장</em>', ra: '구직 중이라면', job: '구직 중·취업 준비', ex: '경력 없이 처음부터 배우는 경우', path: '경력이 없어도 입사 교육부터 처음 하는 분 기준으로 배웁니다. 첫 달은 선배와 동행 상담을 하고, 가입비·교육비는 없습니다.' },
+  { k: '프리랜서', color: '#7A4CC2', label: '프리랜서', icon: '💻', sub: '들쑥날쑥한 수입 대신, <em>11개월 동안 매월 2,000만원 이상</em>', ra: '프리랜서라면', job: '프리랜서·기타', ex: '내 일정대로 일하던 경험을 살리는 경우', path: '일정을 스스로 짜는 일이라 혼자 일해 본 경험이 그대로 쓰입니다. 고객은 상담을 신청한 분부터 만나며 시작합니다.' },
+  { k: '경력 단절', color: '#C23F78', label: '경력단절', icon: '🌱', sub: '육아·간병으로 쉬었다가, <em>내 일정대로 다시 시작</em>', ra: '경력이 중단됐다면', job: '전업주부·경력 단절', ex: '쉬던 시간을 끝내고 다시 일로 돌아오는 경우', path: '육아·간병 등으로 쉬었다가 다시 시작하는 분이 많습니다. 일정을 스스로 짜는 일이라 집안일과 맞추며 다닐 수 있고, 첫 달은 선배와 같이 고객을 만납니다.' },
+  { k: '보험 경력직', color: '#127A85', label: '보험경력직', icon: '📋', sub: '경력자 조건부터 확인, <em>15개월째 지원금</em>', ra: '보험 경력직이라면', job: '보험업 경력자', career: true, ex: '경력 조건부터 확인하는 경우', path: '최근 소득과 이직 의향에 따라 지원 조건이 달라집니다. 담당자가 통화에서 내 조건부터 확인해 드립니다.' }
+];
+// 실제 사례(v5 랜딩 9명 원문, 본인 동의) — 분류·나이대에 맞는 칸에만.
+const REAL = {
+  '직장인': { '30대': { who: '무역회사 다니던 32세', res: '10개월 만에 부지점장', pt: '영업 1년 차에 MDRT 달성' }, '40대': { who: '전기공학 · 기업 영업 출신 40세', res: '1년 만에 수석부지점장', pt: '영업을 하러 왔다가 관리자의 길을 선택' }, '50대 이상': { who: '학원 강사 출신 51세', res: '7개월 만에 팀장', pt: '영업에 관리자 비전까지 보고 전향' } },
+  '자영업': { '50대 이상': { who: '자영업 · 개인사업 출신 55세', res: '입사 10개월에 MDRT', pt: '높은 월세·자재비 부담에 보험업으로 전향' } },
+  '구인·구직 중': { '20대': { who: '경영학과 졸업 28세', res: '4개월 만에 부팀장', pt: '금융권 진로를 꿈꾸다 영업에 도전' } },
+  '프리랜서': { '30대': { who: '프리랜서 37세', res: '11개월 동안 매월 2,000만원 이상', pt: '직접 도입 4명으로 팀장 유지' } }
+};
+// 가상 사례(10/6 지점장님 "사례를 만들어야지") — 실제 사례가 없는 칸. 사람 이야기 형식, '가상 사례' 표시, 승급·소득 같은 성과 숫자는 넣지 않는다.
+const STORY = { // 10/6 "가상 사례라고 쓰지 마" — 지어낸 인물 대신 '○○라면' 시작 안내로(실제 인물처럼 보이지 않게, 표시광고법·메타 심사)
+  '직장인': { '20대': { res: '월급 오르기를 기다리는 대신, 내 실적으로', story: '남의 실적을 정리하던 경험이 있다면 내 실적으로 버는 일로 옮기기 좋습니다. 퇴근 후 상담부터 받아 보고, 입사하면 첫 달은 선배와 같이 고객을 만나며 배웁니다.' } },
+  '자영업': {
+    '20대': { res: '광고비·재고 걱정 없는 일로', story: '광고비와 재고에 돈이 묶이는 대신, 고객 응대 경험을 상담에 그대로 씁니다. 수입이 자리 잡기 전에는 정착지원금이 매월 나옵니다.' },
+    '30대': { res: '가게를 정리하고, 고정비 없는 일로', story: '월세·재료비 같은 고정비 없이 고객을 만나는 일입니다. 단골을 만들던 감각이 그대로 쓰이고, 첫 달은 선배와 동행 상담으로 시작합니다.' },
+    '40대': { res: '현장 대신 상담 테이블로', story: '견적·자재비·인건비에 쫓기는 대신 혼자 몸으로 할 수 있는 일입니다. 사장으로 사람을 상대해 본 경험이 가장 큰 무기가 됩니다.' } },
+  '구인·구직 중': {
+    '30대': { res: '시험 대신, 바로 시작할 수 있는 일로', story: '경력이 없어도 입사 교육부터 처음 하는 사람 기준으로 배웁니다. 가입비·교육비 없이 시작합니다.' },
+    '40대': { res: '면접 대신, 바로 시작할 수 있는 일로', story: '회사에서 해 온 보고·설명 경험이 고객 상담에 그대로 쓰입니다. 첫 달은 선배와 같이 다닙니다.' },
+    '50대 이상': { res: '나이 대신, 해 온 일로 다시', story: '지인에게 기대지 않고 상담을 신청한 고객을 만나는 방식으로 일합니다. 그동안 쌓은 사회 경험이 상담에서 신뢰가 됩니다.' } },
+  '경력 단절': {
+    '20대': { res: '쉬던 시간을 끝내고, 새 일로', story: '교육은 처음 하는 사람 기준이고, 첫 달은 선배와 같이 고객을 만납니다. 일정을 스스로 짜는 일이라 아이 시간에 맞출 수 있습니다.' },
+    '30대': { res: '교대 근무 대신, 내 시간에 맞추는 일로', story: '설명하고 돌보던 경험이 보장 상담에 그대로 쓰입니다. 일정은 스스로 짭니다.' },
+    '40대': { res: '아이 학교 보내고, 다시 일로', story: '일정을 스스로 짜는 일이라 집안 시간에 맞추며 다닐 수 있습니다. 공백이 길어도 처음 하는 사람 기준으로 다시 배웁니다.' },
+    '50대 이상': { res: '쉬던 기간이 길어도, 다시 내 일로', story: '나이와 공백보다 사람을 대하는 태도를 먼저 봅니다. 첫 달은 선배와 같이 다니며 다시 시작합니다.' } },
+  '프리랜서': {
+    '20대': { res: '들쑥날쑥한 수입 대신, 매월 받는 지원금으로', story: '일감이 끊기는 달이 걱정이라면, 처음 11개월은 정착지원금이 매월 나와 수입이 들쑥날쑥하지 않게 시작할 수 있습니다.' },
+    '40대': { res: '설명하는 일을, 상담하는 일로', story: '가르치고 설명하던 습관이 고객 상담에 그대로 쓰입니다. 수업 시간 대신 내 일정대로 고객을 만납니다.' },
+    '50대 이상': { res: '일이 없는 달 걱정 없이', story: '사람 앞에서 말하던 경험으로 상담을 하고, 첫 달은 선배와 같이 다닙니다.' } },
+  '보험 경력직': {
+    '20대': { res: '관리받는 곳에서 다시 시작', story: '혼자 고객을 찾느라 지쳤다면, 상담을 신청한 고객을 연결받는 구조와 관리자가 같이 다니는 문화를 확인해 보세요.' },
+    '30대': { res: '경력 조건부터 확인하고 이동', story: '직전 연봉이 3천만원을 넘으면 경력자 조건(15개월째 지급)이 됩니다. 옮기기 전에 내 조건부터 통화로 들어 보세요.' },
+    '40대': { res: '영업에서 관리자로', story: '오래 영업만 했다면 팀을 키우는 쪽으로 방향을 바꿀 수 있습니다. 쌓인 경력만큼 후배를 가르치는 일로 넘어갑니다.' },
+    '50대 이상': { res: '3년이 지났다면 신인으로 다시', story: '보험 일을 그만둔 지 3년이 넘었다면 신인과 똑같이 11개월 동안 매월 지원금을 받는 조건으로 시작합니다.' } }
+};
+const SXL = { f: '여성', m: '남성' };
+const JOBS = CATS.map(c => c.job);
+const AGES = ['20대', '30대', '40대', '50대 이상'];
+const A = {}, flow = document.getElementById('flow');
+const STEPS = { learn: ['sit', 'age'], career: ['sit', 'gap', 'gapd', 'income', 'intent'] }; // 경력자 = v5 랜딩 경력자 질문 그대로(10/6 "정말 이직할 만한 사람만")
+let P = null; const marks = [];
+const total = () => P ? P.length + 1 : 1; // 사례 단계 + 마지막(통화 시간 또는 번호)
+const track = n => { /* 단계 숫자는 안 보임(10/6 "단계나 시간 쓰지 마") */ document.getElementById('tbar').style.transform = 'scaleX(' + Math.max(.03, n / total()) + ')'; };
+const motion = () => matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth';
+const el = h => { const d = document.createElement('div'); d.innerHTML = h.trim(); return d.firstElementChild; };
+const scrollTo = node => setTimeout(() => node.scrollIntoView({ behavior: motion(), block: 'start' }), 60);
+const infoCard = i => el(`<section class="info"><span class="tag">${i.tag}</span><h3>${i.h}</h3>${i.p ? `<p>${i.p}</p>` : ''}${i.x || ''}</section>`);
+function bubble(label, text, pos) {
+  const a = el(`<div class="ans"><span class="qq">${label}</span><span class="bubble">${text}</span><button class="edit" type="button">답 바꾸기</button></div>`);
+  a.querySelector('.edit').onclick = () => restart(pos);
+  return a;
+}
+function restart(pos) {
+  const cut = pos < 0 ? 0 : marks[pos];
+  while (flow.children.length > cut) flow.lastElementChild.remove();
+  ask(pos);
+}
+// 10/6 지점장님 "답을 눌렀을 때 다른 팝업이 뜨게 말고, 밑으로 스크롤이 내려가게" — 카드를 바꿔치우지 않고 그 자리에 잠근다.
+let lastBtn = null; flow.addEventListener('click', e => { lastBtn = e.target.closest('button'); }, true);
+// 10/6 지점장님 "답 바꾸기 말고, 다시 누르면 바로 뜨게" — 답한 카드도 버튼은 살아 있고, 다른 답을 누르면 그 아래를 지우고 새 답으로 이어 간다.
+function lock(card, btn, pos) {
+  card.classList.add('locked');
+  card.querySelectorAll('button').forEach(b => b.classList.remove('chosen'));
+  if (btn) btn.classList.add('chosen');
+  if (card._re) return; card._re = true;
+  card.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b || !card.classList.contains('locked')) return;
+    if (b.classList.contains('chosen')) { e.stopPropagation(); return; } // 같은 답을 또 누르면 그대로
+    while (card.nextElementSibling) card.nextElementSibling.remove();
+    card.classList.remove('locked');
+  }, true);
+}
+function qcard(pos, title, why) {
+  return el(`<section class="q"><h2>${title}</h2>${why ? `<p class="why">${why}</p>` : ''}<div class="body"></div></section>`);
+}
+function next(card, pos, label, text, info) {
+  lock(card, card.contains(lastBtn) ? lastBtn : null, pos);
+  let n = null; if (info) { n = infoCard(info); flow.append(n); }
+  ask(pos + 1); scrollTo(n || flow.lastElementChild);
+}
+// 10/6 "빠르게 담당자한테 설명 듣고 싶어요는 버리고" — 시작 갈래 없음. 명세서 도장 → 번호 → 사례 공유로 이어진다.
+function bdayBand(v) { // 생년월일 6자리(YYMMDD) 또는 8자리 → 나이대
+  const d = String(v || '').replace(/\D/g, ''); if (d.length !== 6 && d.length !== 8) return '';
+  let y = d.length === 8 ? +d.slice(0, 4) : +d.slice(0, 2); if (d.length === 6) y += y > 26 ? 1900 : 2000;
+  const age = 2026 - y; return age < 20 ? '' : age < 30 ? '20대' : age < 40 ? '30대' : age < 50 ? '40대' : '50대 이상';
+}
+/* ═══ 실제판 연동 (2026-10-06) — v5 cf_live 와 같은 메일 계정·양식·픽셀·재신청 막기 ═══
+   메일 1 = 이름·번호를 낸 순간(1차 접수, 이탈해도 남음) + 픽셀 Lead.
+   메일 2 = '추가 정보 — 새 신청 아님' 표식을 단 같은 이름·번호 메일(직업·나이대·경력자 답·통화 시간·중단 사유).
+            통화 시간을 고르거나 경력자가 중단하면 보내고, 그 전에 화면을 떠나면(숨김·닫힘) 그때까지의 답을 보낸다.
+   EmailJS 는 SDK 대신 같은 주소로 직접 보낸다(SDK 4.4.1 도 이 주소에 같은 JSON 을 POST) — 페이지를 떠날 때도 가도록 keepalive. */
+const EJ = { url: 'https://api.emailjs.com/api/v1.0/email/send', service: 'service_x66ocbi', template: 'template_7b1xztu', key: 'tRnVoZ96PmFbQAoK9' };
+const ejSend = (params, keepalive) => fetch(EJ.url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: !!keepalive,
+  body: JSON.stringify({ lib_version: '4.4.1', user_id: EJ.key, service_id: EJ.service, template_id: EJ.template, template_params: params }) })
+  .then(r => { if (!r.ok) throw new Error('EmailJS ' + r.status); });
+// 광고 추적값(?ad=소재&set=타깃) — 페이지를 열 때 한 번 저장. 한 페이지라 끝까지 유지된다.
+window.AD_TRACK = (() => {
+  const q = new URLSearchParams(location.search), g = k => (q.get(k) || '').trim().slice(0, 80);
+  return { ad: g('ad') || g('utm_content'), set: g('set') || g('utm_term'), camp: g('utm_campaign'), src: g('utm_source') || (q.has('fbclid') ? 'meta' : ''),
+    label() { const a = []; if (this.ad) a.push('소재 ' + this.ad); if (this.set) a.push('타깃 ' + this.set); if (this.camp) a.push('캠페인 ' + this.camp); return a.join(' / '); } };
+})();
+// 사람이 치지 않고 브라우저·앱이 채운 이름·번호 표시(2026-09-25 결정 2㉡)
+let autoFilled = false;
+document.addEventListener('input', e => { if ((e.target.id === 'nm' || e.target.id === 'ph') && (!e.inputType || e.inputType === 'insertReplacementText')) autoFilled = true; }, true);
+// v8 칸 값 → v5 메일 값(DB관리챕터 유형 판별·리드 도구가 v5 값을 씀)
+const JOB_V5 = { '구직 중·취업 준비': '구직 중·취업준비', '전업주부·경력 단절': '전업주부·경력단절' };
+const TIME_V5 = { '지금 30분 안에': '30분 내 통화 가능', '오전 9~12시': '오전(9~12시)', '오후 12~18시': '오후(12~18시)', '퇴근 후 19~21시': '퇴근 후(19~21시)' };
+const fmtPh = d => `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
+function mailParams(tag, first) {
+  const T = window.AD_TRACK;
+  const p = { user_name: A.name, user_phone: fmtPh(A.phone),
+    user_job: first ? '미응답' : (JOB_V5[A.job] || A.job || '미응답'), user_time: first ? '미응답' : (TIME_V5[A.time] || A.time || '미응답'),
+    send_time: A.sentAt + tag,
+    user_gap: first ? '' : A.gap || '', user_gap_detail: first ? '' : A.gapd || '', user_income: first ? '' : A.income || '', user_intent: first ? '' : A.intent || '',
+    ad_id: T.ad, ad_set: T.set, ad_campaign: T.camp, ad_source: T.src };
+  if (T.label()) p.send_time += '  [' + T.label() + ']';
+  if (!first && A.age) p.send_time += '  [나이 ' + A.age + ']';
+  if (!first && A.time === '지금 30분 안에') p.send_time += '  [30분 내 통화: 가능]';
+  if (!first && A.exit) p.send_time += '  [중단: ' + A.exit + ']';
+  if (autoFilled) p.send_time += '  [자동채움]';
+  return p;
+}
+// 메일 2 — 같은 내용은 두 번 보내지 않는다. 실패하면 다음 기회(화면 떠날 때 등)에 다시.
+function sendMore(keepalive) {
+  if (!A.mail1 || !A.job) return;
+  const p = mailParams('  [추가 정보 — 새 신청 아님]'), sig = JSON.stringify(p);
+  if (sig === A.sig2) return;
+  A.sig2 = sig; ejSend(p, keepalive).catch(() => { A.sig2 = ''; });
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sendMore(true); });
+addEventListener('pagehide', () => sendMore(true));
+// 재신청 막기(2026-09-25) — A: 이 폰에서 신청한 적 있음 / B: 서버에 '이미 신청한 번호인지'만 묻는다(번호는 SHA-256). 2.5초 안에 답이 없으면 막지 않는다.
+const HQ_DUP_API = 'https://hanshin.tailc0e4a6.ts.net/fc/check';
+function hqAppliedHere() { try { return !!localStorage.getItem('hq_applied'); } catch (e) { return false; } }
+function hqMarkApplied(name, phone) { try { localStorage.setItem('hq_applied', JSON.stringify({ name, phone, at: Date.now() })); } catch (e) {} }
+async function hqIsDup(phone) {
+  try {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(phone).replace(/\D/g, '')));
+    const h = Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 2500);
+    const r = await fetch(HQ_DUP_API + '?h=' + h, { signal: ctl.signal }); clearTimeout(t);
+    return r.ok && (await r.json()).dup === true;
+  } catch (e) { return false; }
+}
+let hqDupPerson = null;
+function hqShowDup(person) {
+  hqDupPerson = person || (() => { try { return JSON.parse(localStorage.getItem('hq_applied') || 'null'); } catch (e) { return null; } })();
+  document.getElementById('dupNotice').hidden = false;
+  document.getElementById('dupNudgeDone').hidden = true;
+  const btn = document.getElementById('dupNudge'); btn.hidden = !(hqDupPerson && hqDupPerson.phone); btn.disabled = false;
+}
+document.getElementById('dupClose').onclick = () => { document.getElementById('dupNotice').hidden = true; };
+// '빨리 연락 받기' = 새 신청이 아니라 원래 담당에게 가는 재촉(리드 도구 a-2 규칙). 픽셀 Lead 로 보내지 않는다.
+document.getElementById('dupNudge').onclick = async () => {
+  const btn = document.getElementById('dupNudge'), p = hqDupPerson || {}, T = window.AD_TRACK; btn.disabled = true;
+  try {
+    await ejSend({ user_name: p.name || '', user_phone: p.phone || '', user_job: '⏰ 연락 요청(재신청)', user_time: '',
+      send_time: new Date().toLocaleString('ko-KR') + '  [연락 요청 — 새 신청 아님]', user_gap: '', user_gap_detail: '', user_income: '', user_intent: '',
+      ad_id: T.ad, ad_set: T.set, ad_campaign: T.camp, ad_source: T.src });
+    btn.hidden = true; document.getElementById('dupNudgeDone').hidden = false;
+  } catch (e) { btn.disabled = false; alert('잠시 후 다시 눌러 주세요.'); }
+};
+// 장난·테스트 입력 막기(2026-09-27, 서버 junk_lead.mjs 와 같은 기준)
+function junkMsg(name, digits) {
+  const n = String(name || '').trim(), a = digits.slice(3, 7), b = digits.slice(7);
+  if (/[ㄱ-ㆎ]/.test(n) || n.length < 2 || /[0-9_!@#$%^&*+=~<>?]/.test(n) || /테스트|test/i.test(n) || /^(.)\1+$/.test(n.replace(/\s/g, ''))) return '성함을 정확히 입력해 주세요 (예: 홍길동)';
+  if (a === b || /(\d)\1{5,}/.test(digits.slice(3)) || '0123456789012'.indexOf(digits.slice(3, 9)) >= 0 || '9876543210987'.indexOf(digits.slice(3, 9)) >= 0) return '연락 가능한 본인 번호를 정확히 입력해 주세요';
+  return '';
+}
+const openLead = () => {
+  if (A.phone) return;
+  if (hqAppliedHere()) return hqShowDup();
+  const f = document.getElementById('lead'); f.hidden = false; document.getElementById('stamp').classList.add('open'); document.getElementById('openLead').hidden = true;
+  setTimeout(() => { f.scrollIntoView({ behavior: motion(), block: 'center' }); document.getElementById('nm').focus({ preventScroll: true }); }, 60);
+};
+document.getElementById('stamp').onclick = openLead;
+document.getElementById('openLead').onclick = openLead;
+document.getElementById('lead').onsubmit = async e => {
+  e.preventDefault();
+  const nm = document.getElementById('nm').value.trim(), ph = document.getElementById('ph').value.replace(/\D/g, ''), bd = '', er = document.getElementById('lerr');
+  if (!nm) return er.textContent = '성함을 입력해 주세요';
+  if (!/^010\d{8}$/.test(ph)) return er.textContent = '010 포함 11자리를 모두 입력해 주세요';
+  if (bd && !bdayBand(bd)) return er.textContent = '생년월일을 1990.03.15처럼 적어 주세요';
+  const junk = junkMsg(nm, ph); if (junk) return er.textContent = junk;
+  const sb = e.target.querySelector('[type=submit]'), sbText = sb.textContent;
+  if (sb.disabled) return;
+  er.textContent = '';
+  // 1차 접수 — 같은 이름·번호를 다시 낸 것('번호 고치기' 후 그대로)이면 메일을 또 보내지 않는다.
+  if (!(A.mail1 && A.mail1.name === nm && A.mail1.phone === ph)) {
+    sb.disabled = true; sb.textContent = '접수 중…';
+    if (await hqIsDup(ph)) { sb.disabled = false; sb.textContent = sbText; return hqShowDup({ name: nm, phone: fmtPh(ph) }); }
+    const prev = A.mail1;
+    A.name = nm; A.phone = ph;
+    A.sentAt = new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    const p = mailParams('  [1차 접수 — 직업·통화 시간은 추가 정보 메일로]' + (prev ? `  [번호 고침 — 앞 접수 ${prev.name} ${fmtPh(prev.phone)}]` : ''), true);
+    try { await ejSend(p); }
+    catch (err) {
+      if (prev) { A.name = prev.name; A.phone = prev.phone; } else { delete A.name; delete A.phone; }
+      sb.disabled = false; sb.textContent = sbText;
+      return er.textContent = '접수가 되지 않았습니다. 잠시 후 다시 눌러 주세요.';
+    }
+    sb.disabled = false; sb.textContent = sbText;
+    A.mail1 = { name: nm, phone: ph }; A.sig2 = '';
+    if (!prev) { // 픽셀 Lead 는 신청 1건에 한 번(번호 고침은 새 신청이 아님)
+      const leadEventId = 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+      try { if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: '보험설계사_채용상담', content_category: 'recruiting', ad_id: p.ad_id, ad_set: p.ad_set }, { eventID: leadEventId }); } catch (x) {}
+    }
+    hqMarkApplied(nm, fmtPh(ph));
+    sendMore(); // 번호를 고치기 전에 이미 고른 답이 있으면 새 번호로 다시 붙인다
+  }
+  A.name = nm; A.phone = ph; A.bday = bd; if (bdayBand(bd)) A.age = bdayBand(bd);
+  const fp = `${ph.slice(0, 3)}-${ph.slice(3, 7)}-${ph.slice(7)}`;
+  document.getElementById('lead').hidden = true;
+  document.getElementById('billName').textContent = '성함 ' + nm;
+  const d = document.getElementById('leadDone'); d.hidden = false;
+  d.innerHTML = `<b>접수됐습니다.</b> 담당자가 <span class="num">${fp}</span>로 내 정착지원금을 알려 드립니다. <button type="button" class="edit" id="refix">번호 고치기</button><br><span class="fine">본인 번호가 맞는지 확인해 주세요. 앱이 저장된 정보로 칸을 채웠을 수 있습니다.</span>`;
+  document.getElementById('refix').onclick = () => { d.hidden = true; document.getElementById('lead').hidden = false; document.getElementById('nm').focus(); };
+  document.getElementById('openLead').hidden = true;
+  flow.hidden = false;
+  if (!flow.children.length) { P = STEPS.learn; ask(0); }
+  scrollTo(flow.firstElementChild);
+};
+const ASK = {
+  // ① 지금 상황 = 큰 분류 5개(10/6 지점장님 "카테고리를 크게: 자영업·직장인·구인구직·프리랜서·경력직").
+  sit(pos) {
+    // 10/6 지점장님: 나이 빼고 '무역회사 다니던 직장인 / 자영업 하던 사장님 / 구인·구직 중이던 경영학과 대학생 / 프리랜서 / 경력이 중단된 능력자 / 보험 경력직'으로 나열.
+    const card = qcard(pos, '당신은 어떤 조건인가요?', '눌러서 내 지원금의 규모를 확인해 보세요!'); card.classList.add('cases-in');
+    card.querySelector('.body').innerHTML = `<div class="grid3">${CATS.map(c => `<button class="opt pick mini" style="--c:${c.color}" type="button" data-k="${c.k}"><span class="ic" aria-hidden="true">${c.icon}</span>${c.label}</button>`).join('')}</div>`;
+    card.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { const c = CATS.find(x => x.k === b.dataset.k); A.sit = c.k; A.job = c.job; if (!c.career) ['gap', 'gapd', 'income', 'intent', 'exit'].forEach(k => delete A[k]); P = c.career ? STEPS.career : STEPS.learn; next(card, pos, '나와 비슷한 분', c.label, null); });
+    return card;
+  },
+  // ② 나이대 = 그 분류의 20·30·40·50대 카드(10/6 "지원금 정보가 아니라 20대 30대 40대 만들면 되니까").
+  //    실제 사례가 있는 칸은 v5 랜딩 9명 원문(본인 동의)을 '실제 사례'로, 없는 칸은 '가상 사례'(STORY)로 표시한다.
+  age(pos) {
+    const c = CATS.find(x => x.k === A.sit);
+    const infoFor = band => {
+      const r = (REAL[c.k] || {})[band];
+      const timing = c.career
+        ? '<p class="fine">직전 연봉 3천만원 초과 경력자는 신인과 같은 금액을 15개월째에 받습니다. 그만둔 지 3년이 지났다면 신인과 같이 11개월 동안 매월 받습니다.</p>'
+        : '<p class="fine">정착지원금은 입사 후 11개월 동안 매월, 실적 구간에 따라 나옵니다(최대 1억 1,500만원 · 수수료·시책·팀 수당 별도).</p>';
+      return r
+        ? { tag: `실제 사례 · ${band} ${c.k}`, h: r.res, p: `${r.who}. ${r.pt}.`, x: '<p class="fine">본인 동의 · 이름 비공개 · 개인의 결과이며 같은 결과를 보장하지 않습니다.</p>' + timing }
+        : (() => { const v = (STORY[c.k] || {})[band]; return v ? { tag: `${band} ${c.ra}`, h: v.res, p: v.story, x: '<p class="fine">결과는 사람마다 다릅니다.</p>' + timing } : { tag: `${band} ${c.k}`, h: `${band} ${c.ra}, 이렇게 시작합니다`, p: c.path, x: timing }; })();
+    };
+    // 10/6 지점장님 "생년월일을 입력하면 굳이 나이를 물어볼 필요가 없잖아" — 생년월일로 나이대를 알면 묻지 않고 그 나이대 사례를 바로 보여 준다.
+    if (A.bday && A.age) { const n = infoCard(infoFor(A.age)); flow.append(n); ask(pos + 1); scrollTo(n); return null; }
+    const card = qcard(pos, `${c.k}, 나이대는요?`, '눌러서 나와 비슷한 분이 어떻게 시작했는지 보세요');
+    card.querySelector('.body').innerHTML = `<div class="opts">${AGES.map(band => { const r = (REAL[c.k] || {})[band], v = (STORY[c.k] || {})[band] || { res: c.ex }; return `<button class="arow" type="button" data-b="${band}"><span class="ab">${band}</span><span class="at">${r ? `<b>${r.who}</b><em>${r.res}</em><small class="badge real">실제 사례</small>` : `<b>${band} ${c.ra}</b><em>${v.res}</em>`}</span></button>`; }).join('')}</div>`;
+    card.querySelectorAll('[data-b]').forEach(b => b.onclick = () => {
+      const band = b.dataset.b, r = (REAL[c.k] || {})[band]; A.age = band; A.story = r ? '실제 ' + r.who : band + ' ' + c.k;
+      const info = infoFor(band);
+      next(card, pos, '나이대', band, info);
+    });
+    return card;
+  },
+  // ── 보험경력직: v5 랜딩의 경력자 질문(아쉬운 점 → 세부 → 소득 3천 → 이직 의향). 이직 의향 없으면 정중히 마무리. ──
+  gap(pos) {
+    const card = qcard(pos, '지금 계신 곳에서 가장 아쉬운 부분은요?', '솔직하게 골라 주세요');
+    const opts = ['영업 환경과 관리자', '소득 구조', '성장과 승급', '특별히 없음'];
+    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${opts.map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
+    card.querySelectorAll('.opt').forEach(b => b.onclick = () => { A.gap = b.textContent; delete A.gapd; next(card, pos, '아쉬운 부분', A.gap, null); });
+    return card;
+  },
+  gapd(pos) {
+    const M = { '영업 환경과 관리자': ['어떤 부분이 가장 크셨나요?', ['고객을 계속 혼자 찾아야 해서', '관리자가 제대로 챙기지 않아서', '교육과 지원이 없어서']],
+      '소득 구조': ['어떤 부분이 아쉬우셨나요?', ['수수료율이 낮아서', '영업비 부담이 커서', '소득이 불안정해서']],
+      '성장과 승급': ['어떤 상황이신가요?', ['승급 요건을 못 채워서', '자리가 나지 않아서', '기준이 불투명해서']] };
+    const m = M[A.gap];
+    if (!m) { ask(pos + 1); return null; } // '특별히 없음'은 건너뜀
+    const card = qcard(pos, m[0], '가장 가까운 것을 골라 주세요');
+    card.querySelector('.body').innerHTML = `<div class="opts">${m[1].map(v => `<button class="opt" type="button">${v} <small>›</small></button>`).join('')}</div>`;
+    card.querySelectorAll('.opt').forEach(b => b.onclick = () => { A.gapd = b.firstChild.textContent.trim(); next(card, pos, m[0], A.gapd, null); });
+    return card;
+  },
+  income(pos) {
+    const card = qcard(pos, '최근 1년 소득이 3천만원을 넘으셨나요?', '경력 지원 조건 확인을 위해 필요합니다');
+    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${['넘습니다', '넘지 않습니다'].map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
+    card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      A.income = b.textContent; delete A.exit;
+      if (A.income === '넘습니다') return next(card, pos, '최근 1년 소득', A.income, { tag: '경력 지원 조건', h: '직전 연봉 3천만원을 넘으면 <em>신인과 같은 금액</em>을 받습니다', p: '경력자는 15개월째에 신인과 같은 금액을 받습니다. 자세한 조건은 상담에서 알려 드립니다.' });
+      lock(card, b, pos);
+      const info = el(`<section class="info"><span class="tag">경력 지원 조건</span><h3>직전 연봉이 3천만원을 넘지 않으면 <em>경력 지원금은 어렵습니다</em></h3><p>다만 관리자로 성장하는 방향으로는 가능합니다. 계속 신청하시겠어요?</p><div class="grid2 compact"><button class="opt" type="button" id="cgo">계속 신청하기</button><button class="opt" type="button" id="cstop">여기서 그만할게요</button></div></section>`);
+      card.after(info); scrollTo(info);
+      info.querySelector('#cgo').onclick = () => { info.querySelectorAll('button').forEach(x => x.disabled = true); info.querySelector('#cgo').classList.add('chosen'); info.classList.add('q', 'locked'); ask(pos + 1); scrollTo(flow.lastElementChild); };
+      info.querySelector('#cstop').onclick = () => { A.exit = '소득 3천 이하 · 그만함'; info.querySelectorAll('button').forEach(x => x.disabled = true); bye(info); };
+    });
+    return card;
+  },
+  intent(pos) {
+    const card = qcard(pos, '원수사 전속 조직입니다. 이직 의향이 있으신가요?', '솔직하게 골라 주세요');
+    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${['네', '아니요'].map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
+    card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      A.intent = b.textContent; delete A.exit;
+      if (A.intent === '네') return next(card, pos, '이직 의향', '네', null);
+      A.exit = '이직 의향 없음'; lock(card, b, pos); bye(card);
+    });
+    return card;
+  },
+  // ③ 자주 하는 질문(10/6 지점장님 "가장 궁금한 건요?가 아니라 자주 하는 질문, 질문 수를 늘려, 눌렀을 때 자동으로 내려가지 않게").
+  //    답은 v5 랜딩 FAQ(확정 문구)에서 가져오고, 승진 질문은 v5 지원금표의 승급 구간(4~6 부팀장·7~9 팀장·10~11 부지점장)과 실제 사례로 답한다.
+  curious(pos) {
+    const FAQ = [
+      ['승진을 빠르게 할 수 있나요?', '네. 실적을 채우면 빠르면 <b>4개월 차 부팀장, 7개월 차 팀장, 10개월 차 부지점장</b>까지 올라갑니다. 실제로 28세 사회 초년생이 4개월 만에 부팀장, 32세 직장인이 10개월 만에 부지점장이 됐습니다. (개인의 결과이며 같은 결과를 보장하지 않습니다)'],
+      ['지원금은 어떻게 받나요?', '입사 후 <b>11개월 동안 매월</b>, 실적 구간에 따라 받습니다. 최대 1억 1,500만원이고, 계약 수수료·시책·팀 실적 수당은 따로 받습니다.'],
+      ['정규직인가요?', '아니요. 회사와 <b>위촉 계약</b>을 맺고 일하는 FC입니다. 그래서 번 만큼 가져가는 구조이고, 처음 11개월은 정착지원금이 매월 따로 나옵니다.'],
+      ['시작할 때 돈이 드나요?', '가입비·교육비·물품비 <b>모두 없습니다.</b> 시작하는 데 드는 비용은 0원입니다.'],
+      ['지인에게 영업해야 하나요?', '지인 영업을 하는 분도 있지만, <b>상담을 신청한 고객을 만나는 DB 영업</b>을 주로 하는 분도 많습니다. 지인 영업 없이 11개월 만에 부지점장이 된 분도 있습니다.'],
+      ['혼자 할 수 있을까요?', '신인 <b>첫 달은 혼자 상담하지 않습니다.</b> 선배가 같이 가는 동행 상담으로 배웁니다.'],
+      ['교육은 어떻게 받나요?', '처음 하는 분 기준으로 <b>입사 교육</b>이 있습니다. 자세한 일정은 상담에서 안내드립니다.']
+    ];
+    return el(`<section class="faq"><h2>자주 하는 질문</h2><p class="why">질문을 누르면 답이 열립니다</p>${FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</section>`);
+  }
+};
+function ask(pos) {
+  track(pos);
+  marks[pos] = flow.children.length;
+  if (pos === P.length) return A.phone ? whenCall() : openLead();
+  const node = ASK[P[pos]](pos); if (node) flow.append(node);
+}
+// 마지막 두 화면 = 이름·번호(+ 나이대·하시는 일은 사례에서 미리 골라 둠) → 본인 확인 + 통화 시간.
+// 경력자가 이직 의향이 없거나 그만하면 정중히 마무리(v5 '좋은 기회로 또 뵐 수 있으면' 문구). 이미 받은 번호에는 '이직 의향 없음' 표시가 붙어 FC가 우선순위를 낮춘다.
+function bye(after) {
+  track(total()); sendMore();
+  const n = el(`<section class="info done"><span class="tag">알려 주셔서 감사합니다</span><h3>좋은 기회로 또 뵐 수 있으면 좋겠습니다</h3><p>궁금한 점은 편하게 물어보세요.</p></section>`);
+  after.after(n); scrollTo(n);
+}
+function whenCall() {
+  if (A.callCard && A.callCard.isConnected) return; delete A.time; // 답을 바꿔 통화 카드가 지워졌으면 다시 띄운다
+  const fp = `${A.phone.slice(0, 3)}-${A.phone.slice(3, 7)}-${A.phone.slice(7)}`;
+  const times = ['지금 30분 안에', '오전 9~12시', '오후 12~18시', '퇴근 후 19~21시', '언제든 괜찮아요'];
+  const card = el(`<section class="q"><h2>언제 전화드릴까요?</h2><p class="why">${fp}로, 고르신 상황에 맞춰 내 정착지원금을 알려 드립니다</p><div class="grid2 compact">${times.map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div><p class="fakewarn"><b>⚠️ 본인 정보로 정확히 신청해 주세요.</b><br>보험업 경력을 숨기고 신인으로 신청하거나, 타인 번호·허위 정보로 신청하면 광고주에게 실제 광고비 손해가 발생합니다. 이런 신청은 <b>기록을 보관하며, 업무방해(형법 제314조)로 고소 등 법적 조치를 진행합니다.</b></p></section>`);
+  A.callCard = card; // 2026-09-27 허위 신청 경고(v5 와 같은 문구·같은 자리 = 마지막 통화 시간 단계)
+  card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    A.time = b.textContent; track(total()); card.classList.add('locked'); card.querySelectorAll('button').forEach(x => x.disabled = true); b.classList.add('chosen'); sendMore(); // 메일 2
+    const done = el(`<section class="info done"><span class="tag">신청 완료</span><h3>담당자가 ${A.time === '언제든 괜찮아요' ? '' : A.time + ' '}${fp}로<br>내 정착지원금을 알려 드립니다</h3><p>통화에서 알려 드리는 것: 내 구간 월별 지원금 · 몇 개월에 어디까지 오르는지 · 회사 이름과 근무지</p><div class="steps4"><div>대상 확인<small>완료</small></div><div>담당자 전화</div><div>1:1 상담</div><div>면접 안내</div></div><p class="fine">강요 없음 · 시작 비용 없음 · 원하는 단계까지만.</p></section>`);
+    card.after(done); scrollTo(done);
+  });
+  flow.append(card); scrollTo(card);
+}
+// 10/6 지점장님 "자주 하는 질문 위에 신청하지 않으면 안 되는 이유" — 영상 '기사' 장면과 같은 내용(파이낸셜뉴스 2026.09.14 기사 제목 인용·4년 분급). GA 비교 문구는 쓰지 않고 기사 제목만 인용(시장개발챕터 지침).
+const why = el(`<section class="urg"><span class="tag">지금 확인해야 하는 이유</span>
+  <h2>신인 지원금을 주는 곳이<br><em>줄고 있습니다</em></h2>
+  <a class="news" href="https://www.fnnews.com/news/202609141354079761" target="_blank" rel="noopener"><small>파이낸셜뉴스 · 2026.09.14</small><b>“1200%룰 때문에”<br>초대형 GA, 정착지원금 줄줄이 폐지</b><span class="go">눌러서 기사 원문 보기 ›</span></a>
+  <div class="pts"><i>1</i><span><b>2027년부터</b> 수수료가 4년에 나눠 지급돼<br>첫해 손에 쥐는 돈이 줄어듭니다.</span><i>2</i><span>그래서 처음 1년을 버티게 해 주는<br><b>정착지원금이 있는 곳</b>에서 시작해야 합니다.</span></div>
+  <button class="cta" type="button" id="urgCta">내가 받을 수 있는지 지금 확인하기</button></section>`);
+flow.after(why);
+why.after(ASK.curious(0));
+why.querySelector('#urgCta').onclick = () => { if (A.phone) { why.querySelector('#urgCta').textContent = '이미 신청하셨어요. 담당자가 곧 연락드립니다'; return; } openLead(); }; // 10/6 "자주 하는 질문을 맨 밑으로"
+</script>
+</body>
+</html>
