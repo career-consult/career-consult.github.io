@@ -603,19 +603,21 @@ function junkMsg(name, digits) {
 }
 const sheet = document.getElementById('sheet');
 let step = 1;
+// 2026-10-07 지점장님 "어디서 헤매는지 체크" — 클래리티 맞춤 이벤트: 창 열기 · 단계 도착 · 어느 단계에서 닫았는지
+const ce = n => { try { window.clarity && clarity('event', n); } catch (e) {} };
 function go(n) {
-  step = n;
+  step = n; ce('신청창_' + n + '단계');
   sheet.querySelectorAll('.st').forEach(x => x.hidden = +x.dataset.s !== n);
   document.getElementById('sbar').style.width = (n * 25) + '%';
   sheet.querySelector('.sp').scrollTop = 0;
 }
 const openLead = () => {
   if (!A.phone && hqAppliedHere()) return hqShowDup();
-  sheet.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('stamp').classList.add('open');
+  ce('신청창_열기'); sheet.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('stamp').classList.add('open');
   go(step);
   if (step === 1) setTimeout(() => document.getElementById('nm').focus(), 80);
 };
-const closeSheet = () => { sheet.hidden = true; document.body.style.overflow = ''; sendMore(); };
+const closeSheet = () => { if (!sheet.hidden) ce('신청창_닫기_' + step + '단계'); sheet.hidden = true; document.body.style.overflow = ''; sendMore(); };
 document.getElementById('sclose').onclick = closeSheet;
 sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
 document.getElementById('stamp').onclick = openLead;
