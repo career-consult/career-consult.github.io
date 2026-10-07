@@ -525,7 +525,7 @@ $('#f').addEventListener('submit', async e => {
   const tag = [v.ad && '소재 ' + v.ad, v.set && '타깃 ' + v.set].filter(Boolean).join(' / ');
   const withWho = (q.get('with') || '').replace(/[\[\]]/g, '').slice(0, 30); // 동행: 먼저 신청한 사람 '이름·끝4자리' → 같은 담당에게(2026-10-07)
   const params = { user_name: v.name, user_phone: v.phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'),
-    user_job: '[잡세미나] ' + (v.status || '상황 미선택'), user_time: '참석 ' + v.people,
+    user_job: '[잡세미나] ' + (/^5t/.test(v.set) ? '[5팀] ' : '[정요섭·김주성] ') + (v.status || '상황 미선택'), user_time: '참석 ' + v.people,
     send_time: new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) + '  [잡세미나 사전신청]' + (tag ? '  [' + tag + ']' : '') + (withWho ? '  [동행: ' + withWho + ']' : ''),
     ad_id: v.ad, ad_set: v.set };
   try { await emailjs.send('service_x66ocbi', 'template_7b1xztu', params, { publicKey: 'tRnVoZ96PmFbQAoK9' }); }
