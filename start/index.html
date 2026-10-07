@@ -275,6 +275,25 @@ h1,h2,h3{text-wrap:balance;letter-spacing:-.03em}
 .dupbox p{font-size:15px;color:var(--sub);line-height:1.6}
 .dupbox .opt{justify-content:center}
 .dupbox .leaddone[hidden]{display:none}
+/* 2026-10-07 지점장님 "1 이름·핸드폰 2 직업·연령대 3 통화 시간 4 신청 완료 — 한 화면 안에서 쭉 이어지게" → 아래에서 올라오는 신청 창 */
+.sheet{position:fixed;inset:0;z-index:15;background:rgba(15,23,42,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet .sp{background:var(--panel);width:100%;max-width:480px;max-height:92vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:14px 16px calc(20px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;animation:sheetUp .28s ease-out}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet .sh{display:flex;align-items:center;gap:10px}
+.sheet .sbar{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.sheet .sbar i{display:block;height:100%;width:25%;background:var(--gold);transition:width .3s ease}
+.sheet .sx{all:unset;cursor:pointer;font-size:14px;font-weight:700;color:var(--sub);padding:4px 2px}
+.sheet .st{display:flex;flex-direction:column;gap:12px}
+.sheet .st[hidden]{display:none}
+.sheet h2{font-size:20px;font-weight:700;line-height:1.4}
+.sheet .why{font-size:13px;color:var(--mut)}
+.sheet .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sheet .grid3 .opt{flex-direction:column;justify-content:center;text-align:center;padding:10px 4px;font-size:13px;gap:2px}
+.sheet .grid3 .opt .ic{font-size:20px}
+.sheet .opt.sel{border-color:var(--gold);background:var(--goldbg);color:var(--goldink)}
+.sheet .back{all:unset;cursor:pointer;font-size:13px;font-weight:700;color:var(--gold);align-self:flex-start}
+@media (prefers-reduced-motion:reduce){.sheet .sp{animation:none}.sheet .sbar i{transition:none}}
 .fakewarn{background:#FEF2F2;border:1px solid #FCA5A5;color:#7F1D1D;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.6}
 </style>
 </head>
@@ -313,21 +332,9 @@ h1,h2,h3{text-wrap:balance;letter-spacing:-.03em}
   <!-- 10/6 지점장님 "내 정착지원금 확인하기는 밑에, 당신은 어떤 조건인가요?를 위로" -->
   <section class="leadbox" id="leadbox" aria-label="내 정착지원금 확인">
     <button class="cta" id="openLead" type="button">내 정착지원금 확인하기</button>
-    <form id="lead" class="lead" hidden novalidate>
-      <p class="lh">정착지원금 확인 결과를 받으실 분</p>
-      <div class="field"><label for="nm">성함</label><input id="nm" name="name" autocomplete="name" enterkeyhint="next" placeholder="홍길동"></div>
-      <div class="field"><label for="ph">휴대폰 번호</label><input id="ph" name="tel" type="tel" inputmode="numeric" autocomplete="tel" maxlength="13" enterkeyhint="next" placeholder="010-0000-0000"></div>
-      <p class="notice">신청하시면 상담 연락을 위해 성함·연락처를 수집하며, 채용 상담 목적으로만 쓰고 1년 후 파기합니다. 원치 않으시면 신청하지 않으셔도 됩니다.</p>
-      <!-- 2026-10-07 허위 신청 경고를 번호 내기 전 자리로 옮김(v8에서 번호를 낸 뒤 마지막 단계에만 떠서 경고 전에 접수됐음) -->
-      <p class="fakewarn"><b>⚠️ 본인 정보로 정확히 신청해 주세요.</b><br>보험업 경력을 숨기고 신인으로 신청하거나, 타인 번호·허위 정보로 신청하면 광고주에게 실제 광고비 손해가 발생합니다. 이런 신청은 <b>기록을 보관하며, 업무방해(형법 제314조)로 고소 등 법적 조치를 진행합니다.</b></p>
-      <p class="err" id="lerr"></p>
-      <button class="cta" type="submit">내 정착지원금 확인하기</button>
-    </form>
-    <div id="leadDone" class="leaddone" hidden></div>
   </section>
 
-  <!-- 10/6 지점장님 "이름·전화번호 쓰면 당신은 어떤 조건인가요가 나와야지" — 번호를 넣은 뒤에 열린다 -->
-  <div id="flow" aria-live="polite" hidden></div>
+  <div id="flow" hidden></div>
 
   <footer class="legal">
     <span class="warn">본 모집은 보험설계사(위촉직) 모집이며, 정규직 채용과 무관합니다.</span>
@@ -339,6 +346,36 @@ h1,h2,h3{text-wrap:balance;letter-spacing:-.03em}
 </main>
 
 <!-- 2026-09-25 재신청 안내(v5 와 같은 문구) — 이 폰에서 이미 신청했거나 서버가 같은 번호라고 답하면 -->
+<!-- 2026-10-07 신청 창 — ① 이름·핸드폰 ② 직업·연령대 ③ 통화 시간 ④ 신청 완료 -->
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-label="내 정착지원금 확인 신청" hidden>
+  <div class="sp">
+    <div class="sh"><div class="sbar"><i id="sbar"></i></div><button type="button" class="sx" id="sclose">닫기 ✕</button></div>
+    <form id="lead" class="st" data-s="1" novalidate>
+      <h2>정착지원금 확인 결과를<br>받으실 분</h2>
+      <div class="field"><label for="nm">성함</label><input id="nm" name="name" autocomplete="name" enterkeyhint="next" placeholder="홍길동"></div>
+      <div class="field"><label for="ph">휴대폰 번호</label><input id="ph" name="tel" type="tel" inputmode="numeric" autocomplete="tel" maxlength="13" enterkeyhint="next" placeholder="010-0000-0000"></div>
+      <p class="notice">신청하시면 상담 연락을 위해 성함·연락처를 수집하며, 채용 상담 목적으로만 쓰고 1년 후 파기합니다. 원치 않으시면 신청하지 않으셔도 됩니다.</p>
+      <!-- 2026-10-07 허위 신청 경고를 번호 내기 전 자리로 옮김(v8에서 번호를 낸 뒤 마지막 단계에만 떠서 경고 전에 접수됐음) -->
+      <p class="fakewarn"><b>⚠️ 본인 정보로 정확히 신청해 주세요.</b><br>보험업 경력을 숨기고 신인으로 신청하거나, 타인 번호·허위 정보로 신청하면 광고주에게 실제 광고비 손해가 발생합니다. 이런 신청은 <b>기록을 보관하며, 업무방해(형법 제314조)로 고소 등 법적 조치를 진행합니다.</b></p>
+      <p class="err" id="lerr"></p>
+      <button class="cta" type="submit">내 정착지원금 확인하기</button>
+    </form>
+    <div class="st" data-s="2" hidden>
+      <button type="button" class="back" id="refix">‹ 번호 고치기</button>
+      <h2>어떤 일을 하고 계신가요?</h2>
+      <div class="grid3" id="jobs"></div>
+      <h2>연령대는요?</h2>
+      <div class="grid2" id="ages"></div>
+    </div>
+    <div class="st" data-s="3" hidden>
+      <h2>언제 전화드릴까요?</h2>
+      <p class="why" id="callWhy"></p>
+      <div class="grid2 compact" id="times"></div>
+    </div>
+    <div class="st" data-s="4" hidden id="doneBox"></div>
+  </div>
+</div>
+
 <div id="dupNotice" class="dup" role="dialog" aria-modal="true" aria-labelledby="dupH" hidden>
   <div class="dupbox">
     <div class="dupic" aria-hidden="true">😊</div>
@@ -564,20 +601,52 @@ function junkMsg(name, digits) {
   if (a === b || /(\d)\1{5,}/.test(digits.slice(3)) || '0123456789012'.indexOf(digits.slice(3, 9)) >= 0 || '9876543210987'.indexOf(digits.slice(3, 9)) >= 0) return '연락 가능한 본인 번호를 정확히 입력해 주세요';
   return '';
 }
+const sheet = document.getElementById('sheet');
+let step = 1;
+function go(n) {
+  step = n;
+  sheet.querySelectorAll('.st').forEach(x => x.hidden = +x.dataset.s !== n);
+  document.getElementById('sbar').style.width = (n * 25) + '%';
+  sheet.querySelector('.sp').scrollTop = 0;
+}
 const openLead = () => {
-  if (A.phone) return;
-  if (hqAppliedHere()) return hqShowDup();
-  const f = document.getElementById('lead'); f.hidden = false; document.getElementById('stamp').classList.add('open'); document.getElementById('openLead').hidden = true;
-  setTimeout(() => { f.scrollIntoView({ behavior: motion(), block: 'center' }); document.getElementById('nm').focus({ preventScroll: true }); }, 60);
+  if (!A.phone && hqAppliedHere()) return hqShowDup();
+  sheet.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('stamp').classList.add('open');
+  go(step);
+  if (step === 1) setTimeout(() => document.getElementById('nm').focus(), 80);
 };
+const closeSheet = () => { sheet.hidden = true; document.body.style.overflow = ''; sendMore(); };
+document.getElementById('sclose').onclick = closeSheet;
+sheet.addEventListener('click', e => { if (e.target === sheet) closeSheet(); });
 document.getElementById('stamp').onclick = openLead;
 document.getElementById('openLead').onclick = openLead;
+document.getElementById('refix').onclick = () => go(1);
+// ② 직업·연령대 — 둘 다 고르면 바로 ③으로
+document.getElementById('jobs').innerHTML = CATS.map(c => `<button class="opt" type="button" data-j="${c.job}"><span class="ic" aria-hidden="true">${c.icon}</span>${c.label}</button>`).join('');
+document.getElementById('ages').innerHTML = AGES.map(v => `<button class="opt" type="button" data-a="${v}">${v}</button>`).join('');
+const pick = (box, attr, key) => box.querySelectorAll('button').forEach(b => b.onclick = () => {
+  box.querySelectorAll('button').forEach(x => x.classList.toggle('sel', x === b));
+  A[key] = b.dataset[attr];
+  if (A.job && A.age) setTimeout(() => go(3), 250);
+});
+pick(document.getElementById('jobs'), 'j', 'job');
+pick(document.getElementById('ages'), 'a', 'age');
+// ③ 통화 시간 → 메일 2 → ④ 완료
+const TIMES = ['지금 30분 안에', '오전 9~12시', '오후 12~18시', '퇴근 후 19~21시', '언제든 괜찮아요'];
+document.getElementById('times').innerHTML = TIMES.map(v => `<button class="opt" type="button">${v}</button>`).join('');
+document.getElementById('times').querySelectorAll('button').forEach(b => b.onclick = () => {
+  A.time = b.textContent; sendMore();
+  const fp = fmtPh(A.phone);
+  document.getElementById('doneBox').innerHTML = `<section class="info done"><span class="tag">신청 완료</span><h3>담당자가 ${A.time === '언제든 괜찮아요' ? '' : A.time + ' '}${fp}로<br>내 정착지원금을 알려 드립니다</h3><p>통화에서 알려 드리는 것: 내 구간 월별 지원금 · 몇 개월에 어디까지 오르는지 · 회사 이름과 근무지</p><p class="fine">강요 없음 · 시작 비용 없음 · 원하는 단계까지만.</p></section><button type="button" class="cta" id="doneClose">확인</button>`;
+  document.getElementById('doneClose').onclick = closeSheet;
+  document.getElementById('openLead').textContent = '신청 완료 · 담당자가 곧 연락드립니다';
+  go(4);
+});
 document.getElementById('lead').onsubmit = async e => {
   e.preventDefault();
-  const nm = document.getElementById('nm').value.trim(), ph = document.getElementById('ph').value.replace(/\D/g, ''), bd = '', er = document.getElementById('lerr');
+  const nm = document.getElementById('nm').value.trim(), ph = document.getElementById('ph').value.replace(/\D/g, ''), er = document.getElementById('lerr');
   if (!nm) return er.textContent = '성함을 입력해 주세요';
   if (!/^010\d{8}$/.test(ph)) return er.textContent = '010 포함 11자리를 모두 입력해 주세요';
-  if (bd && !bdayBand(bd)) return er.textContent = '생년월일을 1990.03.15처럼 적어 주세요';
   const junk = junkMsg(nm, ph); if (junk) return er.textContent = junk;
   const sb = e.target.querySelector('[type=submit]'), sbText = sb.textContent;
   if (sb.disabled) return;
@@ -585,7 +654,7 @@ document.getElementById('lead').onsubmit = async e => {
   // 1차 접수 — 같은 이름·번호를 다시 낸 것('번호 고치기' 후 그대로)이면 메일을 또 보내지 않는다.
   if (!(A.mail1 && A.mail1.name === nm && A.mail1.phone === ph)) {
     sb.disabled = true; sb.textContent = '접수 중…';
-    if (await hqIsDup(ph)) { sb.disabled = false; sb.textContent = sbText; return hqShowDup({ name: nm, phone: fmtPh(ph) }); }
+    if (await hqIsDup(ph)) { sb.disabled = false; sb.textContent = sbText; closeSheet(); return hqShowDup({ name: nm, phone: fmtPh(ph) }); }
     const prev = A.mail1;
     A.name = nm; A.phone = ph;
     A.sentAt = new Date().toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
@@ -605,97 +674,18 @@ document.getElementById('lead').onsubmit = async e => {
     hqMarkApplied(nm, fmtPh(ph));
     sendMore(); // 번호를 고치기 전에 이미 고른 답이 있으면 새 번호로 다시 붙인다
   }
-  A.name = nm; A.phone = ph; A.bday = bd; if (bdayBand(bd)) A.age = bdayBand(bd);
-  const fp = `${ph.slice(0, 3)}-${ph.slice(3, 7)}-${ph.slice(7)}`;
-  document.getElementById('lead').hidden = true;
   document.getElementById('billName').textContent = '성함 ' + nm;
-  const d = document.getElementById('leadDone'); d.hidden = false;
-  d.innerHTML = `<b>접수됐습니다.</b> 담당자가 <span class="num">${fp}</span>로 내 정착지원금을 알려 드립니다. <button type="button" class="edit" id="refix">번호 고치기</button><br><span class="fine">본인 번호가 맞는지 확인해 주세요. 앱이 저장된 정보로 칸을 채웠을 수 있습니다.</span>`;
-  document.getElementById('refix').onclick = () => { d.hidden = true; document.getElementById('lead').hidden = false; document.getElementById('nm').focus(); };
-  document.getElementById('openLead').hidden = true;
-  flow.hidden = false;
-  if (!flow.children.length) { P = STEPS.learn; ask(0); }
-  scrollTo(flow.firstElementChild);
+  document.getElementById('callWhy').textContent = fmtPh(ph) + '로 내 정착지원금을 알려 드립니다';
+  go(A.time ? 4 : 2);
 };
-const ASK = {
-  // ① 지금 상황 = 큰 분류 5개(10/6 지점장님 "카테고리를 크게: 자영업·직장인·구인구직·프리랜서·경력직").
-  sit(pos) {
-    // 10/6 지점장님: 나이 빼고 '무역회사 다니던 직장인 / 자영업 하던 사장님 / 구인·구직 중이던 경영학과 대학생 / 프리랜서 / 경력이 중단된 능력자 / 보험 경력직'으로 나열.
-    const card = qcard(pos, '당신은 어떤 조건인가요?', '눌러서 내 지원금의 규모를 확인해 보세요!'); card.classList.add('cases-in');
-    card.querySelector('.body').innerHTML = `<div class="grid3">${CATS.map(c => `<button class="opt pick mini" style="--c:${c.color}" type="button" data-k="${c.k}"><span class="ic" aria-hidden="true">${c.icon}</span>${c.label}</button>`).join('')}</div>`;
-    card.querySelectorAll('[data-k]').forEach(b => b.onclick = () => { const c = CATS.find(x => x.k === b.dataset.k); A.sit = c.k; A.job = c.job; if (!c.career) ['gap', 'gapd', 'income', 'intent', 'exit'].forEach(k => delete A[k]); P = c.career ? STEPS.career : STEPS.learn; next(card, pos, '나와 비슷한 분', c.label, null); });
-    return card;
-  },
-  // ② 나이대 = 그 분류의 20·30·40·50대 카드(10/6 "지원금 정보가 아니라 20대 30대 40대 만들면 되니까").
-  //    실제 사례가 있는 칸은 v5 랜딩 9명 원문(본인 동의)을 '실제 사례'로, 없는 칸은 '가상 사례'(STORY)로 표시한다.
-  age(pos) {
-    const c = CATS.find(x => x.k === A.sit);
-    const infoFor = band => {
-      const r = (REAL[c.k] || {})[band];
-      const timing = c.career
-        ? '<p class="fine">직전 연봉 3천만원 초과 경력자는 신인과 같은 금액을 15개월째에 받습니다. 그만둔 지 3년이 지났다면 신인과 같이 11개월 동안 매월 받습니다.</p>'
-        : '<p class="fine">정착지원금은 입사 후 11개월 동안 매월, 실적 구간에 따라 나옵니다(최대 1억 1,500만원 · 수수료·시책·팀 수당 별도).</p>';
-      return r
-        ? { tag: `실제 사례 · ${band} ${c.k}`, h: r.res, p: `${r.who}. ${r.pt}.`, x: '<p class="fine">본인 동의 · 이름 비공개 · 개인의 결과이며 같은 결과를 보장하지 않습니다.</p>' + timing }
-        : (() => { const v = (STORY[c.k] || {})[band]; return v ? { tag: `${band} ${c.ra}`, h: v.res, p: v.story, x: '<p class="fine">결과는 사람마다 다릅니다.</p>' + timing } : { tag: `${band} ${c.k}`, h: `${band} ${c.ra}, 이렇게 시작합니다`, p: c.path, x: timing }; })();
-    };
-    // 10/6 지점장님 "생년월일을 입력하면 굳이 나이를 물어볼 필요가 없잖아" — 생년월일로 나이대를 알면 묻지 않고 그 나이대 사례를 바로 보여 준다.
-    if (A.bday && A.age) { const n = infoCard(infoFor(A.age)); flow.append(n); ask(pos + 1); scrollTo(n); return null; }
-    const card = qcard(pos, `${c.k}, 나이대는요?`, '눌러서 나와 비슷한 분이 어떻게 시작했는지 보세요');
-    card.querySelector('.body').innerHTML = `<div class="opts">${AGES.map(band => { const r = (REAL[c.k] || {})[band], v = (STORY[c.k] || {})[band] || { res: c.ex }; return `<button class="arow" type="button" data-b="${band}"><span class="ab">${band}</span><span class="at">${r ? `<b>${r.who}</b><em>${r.res}</em><small class="badge real">실제 사례</small>` : `<b>${band} ${c.ra}</b><em>${v.res}</em>`}</span></button>`; }).join('')}</div>`;
-    card.querySelectorAll('[data-b]').forEach(b => b.onclick = () => {
-      const band = b.dataset.b, r = (REAL[c.k] || {})[band]; A.age = band; A.story = r ? '실제 ' + r.who : band + ' ' + c.k;
-      const info = infoFor(band);
-      next(card, pos, '나이대', band, info);
-    });
-    return card;
-  },
-  // ── 보험경력직: v5 랜딩의 경력자 질문(아쉬운 점 → 세부 → 소득 3천 → 이직 의향). 이직 의향 없으면 정중히 마무리. ──
-  gap(pos) {
-    const card = qcard(pos, '지금 계신 곳에서 가장 아쉬운 부분은요?', '솔직하게 골라 주세요');
-    const opts = ['영업 환경과 관리자', '소득 구조', '성장과 승급', '특별히 없음'];
-    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${opts.map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
-    card.querySelectorAll('.opt').forEach(b => b.onclick = () => { A.gap = b.textContent; delete A.gapd; next(card, pos, '아쉬운 부분', A.gap, null); });
-    return card;
-  },
-  gapd(pos) {
-    const M = { '영업 환경과 관리자': ['어떤 부분이 가장 크셨나요?', ['고객을 계속 혼자 찾아야 해서', '관리자가 제대로 챙기지 않아서', '교육과 지원이 없어서']],
-      '소득 구조': ['어떤 부분이 아쉬우셨나요?', ['수수료율이 낮아서', '영업비 부담이 커서', '소득이 불안정해서']],
-      '성장과 승급': ['어떤 상황이신가요?', ['승급 요건을 못 채워서', '자리가 나지 않아서', '기준이 불투명해서']] };
-    const m = M[A.gap];
-    if (!m) { ask(pos + 1); return null; } // '특별히 없음'은 건너뜀
-    const card = qcard(pos, m[0], '가장 가까운 것을 골라 주세요');
-    card.querySelector('.body').innerHTML = `<div class="opts">${m[1].map(v => `<button class="opt" type="button">${v} <small>›</small></button>`).join('')}</div>`;
-    card.querySelectorAll('.opt').forEach(b => b.onclick = () => { A.gapd = b.firstChild.textContent.trim(); next(card, pos, m[0], A.gapd, null); });
-    return card;
-  },
-  income(pos) {
-    const card = qcard(pos, '최근 1년 소득이 3천만원을 넘으셨나요?', '경력 지원 조건 확인을 위해 필요합니다');
-    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${['넘습니다', '넘지 않습니다'].map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
-    card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
-      A.income = b.textContent; delete A.exit;
-      if (A.income === '넘습니다') return next(card, pos, '최근 1년 소득', A.income, { tag: '경력 지원 조건', h: '직전 연봉 3천만원을 넘으면 <em>신인과 같은 금액</em>을 받습니다', p: '경력자는 15개월째에 신인과 같은 금액을 받습니다. 자세한 조건은 상담에서 알려 드립니다.' });
-      lock(card, b, pos);
-      const info = el(`<section class="info"><span class="tag">경력 지원 조건</span><h3>직전 연봉이 3천만원을 넘지 않으면 <em>경력 지원금은 어렵습니다</em></h3><p>다만 관리자로 성장하는 방향으로는 가능합니다. 계속 신청하시겠어요?</p><div class="grid2 compact"><button class="opt" type="button" id="cgo">계속 신청하기</button><button class="opt" type="button" id="cstop">여기서 그만할게요</button></div></section>`);
-      card.after(info); scrollTo(info);
-      info.querySelector('#cgo').onclick = () => { info.querySelectorAll('button').forEach(x => x.disabled = true); info.querySelector('#cgo').classList.add('chosen'); info.classList.add('q', 'locked'); ask(pos + 1); scrollTo(flow.lastElementChild); };
-      info.querySelector('#cstop').onclick = () => { A.exit = '소득 3천 이하 · 그만함'; info.querySelectorAll('button').forEach(x => x.disabled = true); bye(info); };
-    });
-    return card;
-  },
-  intent(pos) {
-    const card = qcard(pos, '원수사 전속 조직입니다. 이직 의향이 있으신가요?', '솔직하게 골라 주세요');
-    card.querySelector('.body').innerHTML = `<div class="grid2 compact">${['네', '아니요'].map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div>`;
-    card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
-      A.intent = b.textContent; delete A.exit;
-      if (A.intent === '네') return next(card, pos, '이직 의향', '네', null);
-      A.exit = '이직 의향 없음'; lock(card, b, pos); bye(card);
-    });
-    return card;
-  },
-  // ③ 자주 하는 질문(10/6 지점장님 "가장 궁금한 건요?가 아니라 자주 하는 질문, 질문 수를 늘려, 눌렀을 때 자동으로 내려가지 않게").
-  //    답은 v5 랜딩 FAQ(확정 문구)에서 가져오고, 승진 질문은 v5 지원금표의 승급 구간(4~6 부팀장·7~9 팀장·10~11 부지점장)과 실제 사례로 답한다.
-  curious(pos) {
+// 10/6 지점장님 "자주 하는 질문 위에 신청하지 않으면 안 되는 이유" — 영상 '기사' 장면과 같은 내용(파이낸셜뉴스 2026.09.14 기사 제목 인용·4년 분급). GA 비교 문구는 쓰지 않고 기사 제목만 인용(시장개발챕터 지침).
+const why = el(`<section class="urg"><span class="tag">지금 확인해야 하는 이유</span>
+  <h2>신인 지원금을 주는 곳이<br><em>줄고 있습니다</em></h2>
+  <a class="news" href="https://www.fnnews.com/news/202609141354079761" target="_blank" rel="noopener"><small>파이낸셜뉴스 · 2026.09.14</small><b>“1200%룰 때문에”<br>초대형 GA, 정착지원금 줄줄이 폐지</b><span class="go">눌러서 기사 원문 보기 ›</span></a>
+  <div class="pts"><i>1</i><span><b>2027년부터</b> 수수료가 4년에 나눠 지급돼<br>첫해 손에 쥐는 돈이 줄어듭니다.</span><i>2</i><span>그래서 처음 1년을 버티게 해 주는<br><b>정착지원금이 있는 곳</b>에서 시작해야 합니다.</span></div>
+  <button class="cta" type="button" id="urgCta">내가 받을 수 있는지 지금 확인하기</button></section>`);
+flow.after(why);
+function faqCard() {
     const FAQ = [
       ['승진을 빠르게 할 수 있나요?', '네. 실적을 채우면 빠르면 <b>4개월 차 부팀장, 7개월 차 팀장, 10개월 차 부지점장</b>까지 올라갑니다. 실제로 28세 사회 초년생이 4개월 만에 부팀장, 32세 직장인이 10개월 만에 부지점장이 됐습니다. (개인의 결과이며 같은 결과를 보장하지 않습니다)'],
       ['지원금은 어떻게 받나요?', '입사 후 <b>11개월 동안 매월</b>, 실적 구간에 따라 받습니다. 최대 1억 1,500만원이고, 계약 수수료·시책·팀 실적 수당은 따로 받습니다.'],
@@ -706,43 +696,9 @@ const ASK = {
       ['교육은 어떻게 받나요?', '처음 하는 분 기준으로 <b>입사 교육</b>이 있습니다. 자세한 일정은 상담에서 안내드립니다.']
     ];
     return el(`<section class="faq"><h2>자주 하는 질문</h2><p class="why">질문을 누르면 답이 열립니다</p>${FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</section>`);
-  }
-};
-function ask(pos) {
-  track(pos);
-  marks[pos] = flow.children.length;
-  if (pos === P.length) return A.phone ? whenCall() : openLead();
-  const node = ASK[P[pos]](pos); if (node) flow.append(node);
 }
-// 마지막 두 화면 = 이름·번호(+ 나이대·하시는 일은 사례에서 미리 골라 둠) → 본인 확인 + 통화 시간.
-// 경력자가 이직 의향이 없거나 그만하면 정중히 마무리(v5 '좋은 기회로 또 뵐 수 있으면' 문구). 이미 받은 번호에는 '이직 의향 없음' 표시가 붙어 FC가 우선순위를 낮춘다.
-function bye(after) {
-  track(total()); sendMore();
-  const n = el(`<section class="info done"><span class="tag">알려 주셔서 감사합니다</span><h3>좋은 기회로 또 뵐 수 있으면 좋겠습니다</h3><p>궁금한 점은 편하게 물어보세요.</p></section>`);
-  after.after(n); scrollTo(n);
-}
-function whenCall() {
-  if (A.callCard && A.callCard.isConnected) return; delete A.time; // 답을 바꿔 통화 카드가 지워졌으면 다시 띄운다
-  const fp = `${A.phone.slice(0, 3)}-${A.phone.slice(3, 7)}-${A.phone.slice(7)}`;
-  const times = ['지금 30분 안에', '오전 9~12시', '오후 12~18시', '퇴근 후 19~21시', '언제든 괜찮아요'];
-  const card = el(`<section class="q"><h2>언제 전화드릴까요?</h2><p class="why">${fp}로, 고르신 상황에 맞춰 내 정착지원금을 알려 드립니다</p><div class="grid2 compact">${times.map(v => `<button class="opt" type="button">${v}</button>`).join('')}</div></section>`);
-  A.callCard = card; // 허위 신청 경고는 2026-10-07 신청 칸(번호 내기 전)으로 옮김
-  card.querySelectorAll('.opt').forEach(b => b.onclick = () => {
-    A.time = b.textContent; track(total()); card.classList.add('locked'); card.querySelectorAll('button').forEach(x => x.disabled = true); b.classList.add('chosen'); sendMore(); // 메일 2
-    const done = el(`<section class="info done"><span class="tag">신청 완료</span><h3>담당자가 ${A.time === '언제든 괜찮아요' ? '' : A.time + ' '}${fp}로<br>내 정착지원금을 알려 드립니다</h3><p>통화에서 알려 드리는 것: 내 구간 월별 지원금 · 몇 개월에 어디까지 오르는지 · 회사 이름과 근무지</p><div class="steps4"><div>대상 확인<small>완료</small></div><div>담당자 전화</div><div>1:1 상담</div><div>면접 안내</div></div><p class="fine">강요 없음 · 시작 비용 없음 · 원하는 단계까지만.</p></section>`);
-    card.after(done); scrollTo(done);
-  });
-  flow.append(card); scrollTo(card);
-}
-// 10/6 지점장님 "자주 하는 질문 위에 신청하지 않으면 안 되는 이유" — 영상 '기사' 장면과 같은 내용(파이낸셜뉴스 2026.09.14 기사 제목 인용·4년 분급). GA 비교 문구는 쓰지 않고 기사 제목만 인용(시장개발챕터 지침).
-const why = el(`<section class="urg"><span class="tag">지금 확인해야 하는 이유</span>
-  <h2>신인 지원금을 주는 곳이<br><em>줄고 있습니다</em></h2>
-  <a class="news" href="https://www.fnnews.com/news/202609141354079761" target="_blank" rel="noopener"><small>파이낸셜뉴스 · 2026.09.14</small><b>“1200%룰 때문에”<br>초대형 GA, 정착지원금 줄줄이 폐지</b><span class="go">눌러서 기사 원문 보기 ›</span></a>
-  <div class="pts"><i>1</i><span><b>2027년부터</b> 수수료가 4년에 나눠 지급돼<br>첫해 손에 쥐는 돈이 줄어듭니다.</span><i>2</i><span>그래서 처음 1년을 버티게 해 주는<br><b>정착지원금이 있는 곳</b>에서 시작해야 합니다.</span></div>
-  <button class="cta" type="button" id="urgCta">내가 받을 수 있는지 지금 확인하기</button></section>`);
-flow.after(why);
-why.after(ASK.curious(0));
-why.querySelector('#urgCta').onclick = () => { if (A.phone) { why.querySelector('#urgCta').textContent = '이미 신청하셨어요. 담당자가 곧 연락드립니다'; return; } openLead(); }; // 10/6 "자주 하는 질문을 맨 밑으로"
+why.after(faqCard());
+why.querySelector('#urgCta').onclick = openLead; // 10/6 "자주 하는 질문을 맨 밑으로"
 </script>
 </body>
 </html>
