@@ -352,7 +352,7 @@ h1,h2,h3{text-wrap:balance;letter-spacing:-.03em}
     <div class="sh"><div class="sbar"><i id="sbar"></i></div><button type="button" class="sx" id="sclose">닫기 ✕</button></div>
     <form id="lead" class="st" data-s="1" novalidate>
       <h2>정착지원금 확인 결과를<br>받으실 분</h2>
-      <div class="field"><label for="nm">성함</label><input id="nm" name="name" autocomplete="name" enterkeyhint="next" placeholder="홍길동"></div>
+      <div class="field"><label for="nm">성함</label><input id="nm" name="name" autocomplete="name" enterkeyhint="next" placeholder="본인 성함"></div>
       <div class="field"><label for="ph">휴대폰 번호</label><input id="ph" name="tel" type="tel" inputmode="numeric" autocomplete="tel" maxlength="13" enterkeyhint="next" placeholder="010-0000-0000"></div>
       <p class="notice">신청하시면 상담 연락을 위해 성함·연락처를 수집하며, 채용 상담 목적으로만 쓰고 1년 후 파기합니다. 원치 않으시면 신청하지 않으셔도 됩니다.</p>
       <!-- 2026-10-07 허위 신청 경고를 번호 내기 전 자리로 옮김(v8에서 번호를 낸 뒤 마지막 단계에만 떠서 경고 전에 접수됐음) -->
@@ -597,7 +597,7 @@ document.getElementById('dupNudge').onclick = async () => {
 // 장난·테스트 입력 막기(2026-09-27, 서버 junk_lead.mjs 와 같은 기준)
 function junkMsg(name, digits) {
   const n = String(name || '').trim(), a = digits.slice(3, 7), b = digits.slice(7);
-  if (/[ㄱ-ㆎ]/.test(n) || n.length < 2 || /[0-9_!@#$%^&*+=~<>?]/.test(n) || /테스트|test/i.test(n) || /^(.)\1+$/.test(n.replace(/\s/g, ''))) return '성함을 정확히 입력해 주세요 (예: 홍길동)';
+  if (/[ㄱ-ㆎ]/.test(n) || n.length < 2 || /[0-9_!@#$%^&*+=~<>?]/.test(n) || /테스트|test/i.test(n) || /^(홍길동|김철수|이영희|고길동|아무개)$/.test(n.replace(/\s/g, '')) || /^(.)\1+$/.test(n.replace(/\s/g, ''))) return '본인 성함을 정확히 입력해 주세요';
   if (a === b || /(\d)\1{5,}/.test(digits.slice(3)) || '0123456789012'.indexOf(digits.slice(3, 9)) >= 0 || '9876543210987'.indexOf(digits.slice(3, 9)) >= 0) return '연락 가능한 본인 번호를 정확히 입력해 주세요';
   return '';
 }
